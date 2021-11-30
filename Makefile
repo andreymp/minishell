@@ -1,4 +1,4 @@
-NAME =	pipex
+NAME =	parser
 
 CC =	gcc
 CFLAGS =	-g -Wall -Wextra -Werror -MMD
@@ -7,6 +7,9 @@ RM =	rm -rf
 
 SRC =   parcer.c	\
 		utils.c 	\
+		do_symbol.c \
+		redirect.c  \
+		main.c		\
 
 INC = 	-I libft/libft.h 	\
 		-I parser.h         \
@@ -23,19 +26,19 @@ LD_FLAGS =	-L libft
 
 
 $(NAME):	$(OBJS)
-			make -C ./libft/
-			make bonus -C ./libft/
+			@make -C ./libft/
+			@make bonus -C ./libft/
 			$(CC) $(CFLAGS) $(LD_FLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
 
 all: 		$(NAME)
 
 clean:
 			$(RM) $(OBJS) $(DEP)
-			make clean -C libft/
+			@make clean -C libft/
 
 fclean: 	clean
 			$(RM) $(NAME)
-			make fclean -C libft/
+			@make fclean -C libft/
 
 re: 		fclean all
 

@@ -6,32 +6,64 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:31:43 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/29 21:30:43 by jobject          ###   ########.fr       */
+/*   Updated: 2021/11/30 20:05:35 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 /*
-обработать "", '', \, $, ;, |, >, >>, <, <<
+обработать "", '', \, $, ;, |, >, >>, <, <<, ' ';
 */
 
-char	*do_gap(char	*str, int	*i)
+// t_cmds	make_cmds(char	*str)
+// {
+// 	t_cmds	cmds;
+// 	int		i;
+// 	int		j;
+// 	char	*tmp;
+
+// 	i = 0;
+// 	j = 0;
+// 	cmds.index = 0;
+// 	while (*(str + i))
+// 	{
+// 		cmds.symbol[cmds.index] = 46;
+// 		while (*(str + i) && *(str + i) != '>' && *(str + i) != '<' && *(str + i) != '|')
+// 			i++;
+// 		if (*(str + i))
+// 			cmds.symbol[cmds.index] = *(str + i);
+// 		tmp = ft_substr(str, j, i - j);
+// 		cmds.cmd[cmds.index++] = ft_split(tmp, ' ');
+// 		free (tmp);
+// 		i++;
+// 		j = i;
+// 	}
+// 	return (cmds);
+// }
+
+t_list	*do_split(char	*str)
 {
-	int	j;
+	t_list	*lst;
+	char	**strs;
+	int		i;
 
-	j = *i;
-	(*i)++;
-	while (*(str + *i) && *(str + *i) != '\'')
-		(*i)++;
-	if (*(str + *i))
-		return (multi_join(str, *i, j));
-	return (NULL);
+	i = 0;
+	lst = NULL;
+	strs = ft_split(str, ';');
+	free(str);
+	while (strs[i])
+	{
+		if (!lst)
+			lst = ft_lstnew(strs[i]);
+		else
+			ft_lstadd_back(&lst, ft_lstnew(strs[i]));
+		i++;
+	}
+	free (strs);
+	return (lst);
 }
-char	*do_gap2(char	*str, int *i);
-char	*do_backslash(char	*str, int *i);
-bool	check_str(char	*str);
 
-void	parser(char	*str)
+char	*parser(char	*str, char	**envp)
 {
 	int	i;
 	
@@ -40,9 +72,12 @@ void	parser(char	*str)
 	{
 		if (*(str + i) == '\'')
 			str = do_gap(str, &i);
-		if (*(str + i) == '"')
-			str = do_gap2(str, &i);
+		if (*(str + i) == '\"')
+			str = do_gap2(str, &i, envp);
 		if (*(str + i) == '\\')
 			str = do_backslash(str, &i);
+		if (*(str + i) == '$')
+			str = do_dollar(str, &i, envp);
 	}
+	return (str);
 }

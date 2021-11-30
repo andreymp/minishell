@@ -62,9 +62,9 @@ ${NAME}:
 
 bonus: 
 		${CC} ${CFLAGS} -c ${FILES_B} -I${DOT_H}
-		${AR} ${NAME} ${BON}
+		${AR} ${NAME} ${MAN} ${BON}
 
-all: ${NAME}
+all: ${NAME} bonus 
 
 clean:
 	${RM} ${MAN} ${BON} $(DEP) $(DEP_B)
