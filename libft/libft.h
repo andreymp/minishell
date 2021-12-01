@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 14:59:46 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/30 16:20:03 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/01 15:38:06 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 typedef struct s_list
 {
 	char			*content;
+	char			**cmd;
 	struct s_list	*next;
 }					t_list;
 

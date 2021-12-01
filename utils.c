@@ -6,22 +6,36 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 21:04:40 by jobject           #+#    #+#             */
-/*   Updated: 2021/11/30 20:33:33 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/01 14:09:04 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-char	*get_filename(char	*str, int i)
+char	*free_fd(char	*str, char *filename, int j, int i)
 {
-	int	j;
+	char	*res;
+	char	*tmp;
+	
+	res = ft_substr(str, 0, i);
+	tmp = ft_strdup(str + ft_strlen(filename) + j);
+	res = ft_strjoin(res, tmp);
+	free (tmp);
+	free (filename);
+	free (str);
+	return(res);
+}
 
-	while (*(str + i) == ' ')
+char	*get_filename(char	*str, int i, int *j)
+{
+	while (*(str + i) && *(str + i) == ' ' )
 		i++;
-	j = i;
-	while (*(str + i) != ' ')
+	if (!*(str + i))
+		return (NULL);
+	*j = i;
+	while (*(str + i) && *(str + i) != ' ')
 		i++;
-	return (ft_substr(str, j, i - j));	
+	return (ft_substr(str, *j, i - *j));	
 }
 
 bool	ft_iskey(char c)

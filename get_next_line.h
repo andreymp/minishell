@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/08 14:04:05 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/01 17:57:33 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/13 16:56:19 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/01 13:12:44 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-char	*ft_strjoin(char const	*s1, char const	*s2)
-{
-	char	*str;
-	size_t	len1;
-	size_t	len2;
+# include <unistd.h>
+# include <stdlib.h>
 
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	str = (char *) malloc((len1 + len2 + 1) * sizeof(char));
-	if (str)
-	{
-		ft_memcpy(str, s1, len1);
-		ft_memmove(str + len1, s2, len2);
-		*(str + len1 + len2) = '\0';
-	}
-	if (*s2 != '/')
-		free((char *) s1);
-	return (str);
-}
+# define BUFFER_SIZE 42
+
+char	*get_next_line(int fd);
+size_t	ft_strlengnl(const char	*str);
+void	*ft_memcpygnl(void	*dest, const void	*src, size_t	num);
+char	*ft_strjoingnl(char	*s1, char const	*s2);
+char	*ft_strdupgnl(const char	*str);
+
+#endif

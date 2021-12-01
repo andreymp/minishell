@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   pipe.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/08 14:04:05 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/01 17:57:33 by jobject          ###   ########.fr       */
+/*   Created: 2021/12/01 16:36:41 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/01 18:04:19 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#ifndef PIPE_H
+# define PIPE_H
 
-char	*ft_strjoin(char const	*s1, char const	*s2)
+# include "parser.h"
+# include <sys/wait.h>
+# include <sys/types.h>
+
+typedef struct s_cmd
 {
-	char	*str;
-	size_t	len1;
-	size_t	len2;
+	t_list	*lst;
+	char	**mypaths;
+	char	*cmd_path;
+}				t_cmd;
 
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	str = (char *) malloc((len1 + len2 + 1) * sizeof(char));
-	if (str)
-	{
-		ft_memcpy(str, s1, len1);
-		ft_memmove(str + len1, s2, len2);
-		*(str + len1 + len2) = '\0';
-	}
-	if (*s2 != '/')
-		free((char *) s1);
-	return (str);
-}
+typedef struct s_proccess
+{
+	int		fds[2];
+	pid_t	parent;
+}				t_proccess;
+
+void	init_env(char	**envp, t_cmd	*cmds);
+void	init_cmd_path(t_cmd	**cmds);
+void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst);
+
+#endif

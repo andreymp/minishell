@@ -9,10 +9,17 @@ SRC =   parcer.c	\
 		utils.c 	\
 		do_symbol.c \
 		redirect.c  \
+		get_next_line.c \
+		get_next_line_utils.c \
 		main.c		\
+		init_pipe.c \
+		pipe.c		\
+
 
 INC = 	-I libft/libft.h 	\
 		-I parser.h         \
+		-I get_next_line.h	\
+		-I pipe.h			\
 
 OBJS =	$(SRC:.c=.o)
 DEP =	$(SRC:.c=.d)
