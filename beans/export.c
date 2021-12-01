@@ -17,24 +17,45 @@ void	ft_lstadd_preback(t_list **lst, t_list *new)
 		*lst = new;
 }
 
-void	mini_export(t_list **list, char *str)
+int	if_same(t_list **list, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '=')
+		i++;
+	while ((*list)->next)
+	{
+		if (!ft_strncmp((*list)->var, str, i))
+		{
+			(*list)->var = str;
+			return (1);
+		}
+		list = &(*list)->next;
+	}
+	return (0);
+}
+
+int	mini_export(t_list **list, char *str)
 {
 	int		i;
 	char	*tmp;
 	t_list	*last;
 
 	i = 0;
-	while(str[i] != '\0')
+	while (str[i] != '\0')
 	{
-		if(str[i] == '=')
+		if (str[i] == '=')
 			break ;
 		i++;
 	}
+	if (str[i] == '\0')
+		return (0);
+	if (if_same(list, str))
+		return (0);
 	last = ft_lstlast(*list);
 	tmp = last->var;
-	if(str[i] == '\0')
-		return ;
-	i = 0;
 	ft_lstadd_preback(list, ft_lstnew(str));
 	ft_lstadd_back(list, ft_lstnew(tmp));
+	return (0);
 }

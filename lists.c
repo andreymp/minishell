@@ -29,3 +29,25 @@ t_list	*ft_lstnew(void	*content)
 	}
 	return (list);
 }
+
+void	ft_lstdelone(t_list	*lst, void (*del)(void *))
+{
+	if (!lst)
+		return ;
+	(*del)(lst->var);
+	free(lst);
+}
+
+void	ft_lstclear(t_list	**lst, void (*del)(void *))
+{
+	t_list	*tmp;
+
+	if (!(*lst))
+		return ;
+	while (*lst)
+	{
+		tmp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = tmp;
+	}
+}

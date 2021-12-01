@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	mini_env(t_list *list)
+int	mini_env(t_list *list)
 {
 	while(list->next)
 	{
@@ -10,4 +10,5 @@ void	mini_env(t_list *list)
 	}
 	ft_putstr_fd(list->var, 1);
 	write(1, "\n", 1);
+	return (0);
 }
