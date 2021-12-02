@@ -1,12 +1,14 @@
-NAME =	parser
+NAME =	minishell
 
 CC =	gcc
-CFLAGS =	-g -Wall -Wextra -Werror -MMD
+CFLAGS =	-g -Wall -Wextra -Werror -MMD #-fsanitize=address
 
 RM =	rm -rf
 
 SRC =   parcer.c	\
 		utils.c 	\
+		utils1.c 	\
+		lists.c     \
 		do_symbol.c \
 		redirect.c  \
 		get_next_line.c \
@@ -14,12 +16,21 @@ SRC =   parcer.c	\
 		main.c		\
 		init_pipe.c \
 		pipe.c		\
+		beans/cd.c  \
+		beans/echo.c \
+		beans/env.c  \
+		beans/exit.c  \
+		beans/export.c  \
+		beans/pwd.c  \
+		beans/unset.c  \
+		minishell.c	   \
 
 
 INC = 	-I libft/libft.h 	\
 		-I parser.h         \
 		-I get_next_line.h	\
 		-I pipe.h			\
+		-I minishell.h		\
 
 OBJS =	$(SRC:.c=.o)
 DEP =	$(SRC:.c=.d)
@@ -35,7 +46,7 @@ LD_FLAGS =	-L libft
 $(NAME):	$(OBJS)
 			@make -C ./libft/
 			@make bonus -C ./libft/
-			$(CC) $(CFLAGS) $(LD_FLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
+			$(CC) $(CFLAGS) $(LD_FLAGS) $(OBJS) ./libft/libft.a -o $(NAME) -l readline
 
 all: 		$(NAME)
 
