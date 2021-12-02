@@ -1,25 +1,33 @@
 #include "../minishell.h"
 
-int	mini_unset(t_list **list, char *str)
+int	mini_unset(t_list **list, char **str)
 {
 	int		i;
+	int		j;
 	char	*tmp;
 	t_list	*last;
 
 	i = 0;
+	j = 0;
 	last = ft_lstlast(*list);
 	tmp = last->var;
-	while (str[i] != '=')
-		i++;
-	while ((*list)->next)
+	while (str[j] != '\0')
 	{
-		if (!ft_strncmp((*list)->var, str, i))
+		while (str[j][i] != '\0')
+			i++;
+		while ((*list)->next)
 		{
-			ft_lstclear(list, del);
-			ft_lstadd_back(list, ft_lstnew(tmp));
-			return (0);
+			if (!ft_strncmp((*list)->var, str[j], i))
+			{
+				last = (*list)->next;
+				ft_lstdelone(*list, del);
+				list = &last;
+				ft_lstadd_back(list, ft_lstnew(tmp));
+			}
+			list = &(*list)->next;
 		}
-		*list = (*list)->next;
+		i = 0;
+		j++;
 	}
 	return (0);
 }

@@ -34,24 +34,23 @@ void	actions(int signal_num, siginfo_t *info, void *old_info)
 	(void)old_info;
 	(void)info;
 	if (signal_num == SIGINT)
-		write(1, "\nminishell> ", 13);
+	{
+		write(2, "\n", 1);
+		rl_on_new_line();
+        rl_redisplay();
+	}
 	else if (signal_num == SIGQUIT)
-		return ;
+	{
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	else if (signal_num == EOF)
+	{
+		write(2, "exit", 4);
+		exit(0);
+	}
+		
 }
-//
-//void	sig_create(struct sigaction *sig)
-//{
-//	sig->sa_sigaction = actions;
-//	sig->sa_flags = SA_SIGINFO;
-//}
-//
-//int	sig_def(struct sigaction sig)
-//{
-//	sigaction(SIGKILL, &sig, NULL);
-//	sigaction(SIGHUP, &sig, NULL);
-//	sigaction(SIGINT, &sig, NULL);
-//	return (0);
-//}
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -61,31 +60,34 @@ int	main(int argc, char *argv[], char *envp[])
 	int					ex_code;
 	struct sigaction	sig;
 	
+	char	*test[5];
+	test[4] = NULL;
 	(void)argc;
 	(void)argv;
 	i = 0;
 	ex_code = 0;
 	list = envp_copy(envp);
-	//while (1)
-	//{
-	//	write(1, "minishell> ", 11);
-	//	str[i] = readline(NULL);			// readline не ставит '\0' на конец строки поэтому ft_putstr_fd поменял немного)
-	//	sig_def(sig);
-	//	add_history(str[i]);
-	//	ex_code = mini_echo(str[i], 0, ex_code);
-	//	i++;
-	//}
 	sig.sa_sigaction = actions;
 	sig.sa_flags = SA_SIGINFO;
 	while (1)
 	{
-		write(1, "minishell> ", 11);
+		//str[i] = readline("minishell> ");
 		sigaction(SIGINT, &sig, NULL);
 		sigaction(SIGQUIT, &sig, NULL);
-		str[i] = readline(NULL);
+		sigaction(EOF, &sig, NULL);
+		str[i] = readline("minishell> ");
 		add_history(str[i]);
-		if (ft_strncmp(str[i], "exit", 4) == 0)
-			mini_exit(str[i]);
+		test[i] = str[i];
+		if (i > 2)
+		//{
+		//	mini_env(list);
+		//	write(1, "\n\n", 2);
+		//	mini_export(&list, test);
+		//	mini_env(list);
+		//	write(1, "\n\n", 2);
+		//	mini_unset(&list, test);
+		//	mini_env(list);
+		//}
 		//ex_code = mini_echo(str[i], 0, ex_code);
 		i++;
 	}

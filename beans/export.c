@@ -36,26 +36,36 @@ int	if_same(t_list **list, char *str)
 	return (0);
 }
 
-int	mini_export(t_list **list, char *str)
+int	mini_export(t_list **list, char **str)
 {
 	int		i;
+	int		j;
 	char	*tmp;
 	t_list	*last;
 
+	j = 0;
 	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '=')
-			break ;
-		i++;
-	}
-	if (str[i] == '\0')
-		return (0);
-	if (if_same(list, str))
-		return (0);
 	last = ft_lstlast(*list);
 	tmp = last->var;
-	ft_lstadd_preback(list, ft_lstnew(str));
+	while (str[j] != '\0')
+	{
+		while (str[j][i] != '\0')
+		{
+			if (str[j][i] == '=')
+				break ;
+			i++;
+		}
+		if (str[j][i] == '\0')
+			return (0);
+		if (if_same(list, str[j]))
+			return (0);
+		if (j == 0)
+			ft_lstadd_preback(list, ft_lstnew(str[j]));
+		else
+			ft_lstadd_back(list, ft_lstnew(str[j]));
+		i = 0;
+		j++;
+	}
 	ft_lstadd_back(list, ft_lstnew(tmp));
 	return (0);
 }

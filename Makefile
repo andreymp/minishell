@@ -9,7 +9,7 @@ RM		=	rm -f
 
 all:		$(NAME)
 $(NAME):	$(OBJS)
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -l readline
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L/Users/remelia/.brew/opt/readline/lib -I/Users/remelia/.brew/opt/readline/include -lreadline
 $(OBJS):	$(HEADER)
 clean:
 		$(RM) $(OBJS)

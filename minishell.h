@@ -40,8 +40,8 @@ int		mini_pwd(void);
 int		mini_cd(char *path);
 void	mini_exit(char *str);
 int		mini_env(t_list *list);
-int		mini_export(t_list **list, char *str);
+int		mini_export(t_list **list, char **str);
 void	del(void *var);
-int		mini_unset(t_list **list, char *str);
+int		mini_unset(t_list **list, char **str);
 
 #endif
