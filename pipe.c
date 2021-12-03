@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:36:45 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/02 19:38:04 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/03 19:50:34 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ static void	pipex(t_cmd	*cmds, char	**envp, t_proccess	*proc)
 
 void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst)
 {
-	// t_list	*tmp;
-
-	// tmp = lst->next;
 	init_env(envp, cmds);
 	while (lst->next)
 	{
@@ -63,11 +60,14 @@ void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst)
 	if (!proc->parent)
 		execve(cmds->cmd_path, cmds->lst->cmd, envp);
 	else
-	// {
+	{
 	// 	while (tmp)
 	// 	{
-	 		waitpid(0, NULL, 0);
+			// dup2(proc->fds[0], STDIN_FILENO);
+			// close(proc->fds[0]);
+			// close(proc->fds[1]);
+	 		waitpid(proc->parent, NULL, 0);
 			// tmp = tmp->next;
-	// 	}
-	// }
+	//	}
+	}
 }

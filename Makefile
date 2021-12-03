@@ -1,7 +1,7 @@
 NAME =	minishell
 
 CC =	gcc
-CFLAGS =	-g -Wall -Wextra -Werror -MMD #-fsanitize=address
+CFLAGS =	-g -Wall -Wextra -Werror -MMD
 
 RM =	rm -rf
 
@@ -24,6 +24,7 @@ SRC =   parcer.c	\
 		beans/pwd.c  \
 		beans/unset.c  \
 		minishell.c	   \
+		beans/history.c	\
 
 
 INC = 	-I libft/libft.h 	\
@@ -31,11 +32,13 @@ INC = 	-I libft/libft.h 	\
 		-I get_next_line.h	\
 		-I pipe.h			\
 		-I minishell.h		\
+		-I /Users/${USER}/.brew/opt/readline/include \
 
 OBJS =	$(SRC:.c=.o)
 DEP =	$(SRC:.c=.d)
 
-LD_FLAGS =	-L libft
+LD_FLAGS =	-L libft \
+			-L /Users/${USER}/.brew/opt/readline/lib \
 
 .PHONY :	all clean re fclean
 
@@ -46,7 +49,7 @@ LD_FLAGS =	-L libft
 $(NAME):	$(OBJS)
 			@make -C ./libft/
 			@make bonus -C ./libft/
-			$(CC) $(CFLAGS) $(LD_FLAGS) $(OBJS) ./libft/libft.a -o $(NAME) -l readline
+			$(CC) $(CFLAGS) $(LD_FLAGS) $(OBJS) ./libft/libft.a -o $(NAME) -lreadline
 
 all: 		$(NAME)
 

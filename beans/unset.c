@@ -1,27 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 11:39:49 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/03 17:39:06 by jobject          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-int	mini_unset(t_lst **list, char *str)
+int	mini_unset(t_lst **list, char **str)
 {
 	int		i;
-	char	*tmp;
+	int		j;
 	t_lst	*last;
 
 	i = 0;
-	if (!str)
-		return (1);
-    last = ft_lstlast_rem(*list);
-    tmp = last->var;
-    while (str[i] != '\0')
-        i++;
-    while ((*list)->next)
-    {
-        if (!ft_strncmp((*list)->var, str, i))
-        {
-            ft_lstclear_rem(list, del);
-            ft_lstadd_back_rem(list, ft_lstnew_rem(tmp));
-            return (0);
-        }
-        list = &(*list)->next;
-    }
-    return (0);
+	j = 1;
+	if (!str[j])
+	{
+		ft_putendl_fd("unset: not enough arguments", 2);
+		return (0);
+	}
+	last = ft_lstlast_rem(*list);
+	while (str[j])
+	{
+		while (str[j][i])
+			i++;
+		while ((*list)->next)
+		{
+			if (!ft_strncmp((*list)->var, str[j], i))
+			{
+				last = (*list)->next;
+				ft_lstdelone_rem(*list, del);
+				*list = last;
+				break ;
+			}
+			list = &(*list)->next;
+		}
+		i = 0;
+		j++;
+	}
+	return (0);
 }

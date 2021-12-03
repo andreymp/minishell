@@ -39,3 +39,20 @@ void	del(void *var)
 {
 	var = NULL;
 }
+
+int	ft_lstsize_rem(t_lst	*lst)
+{
+	int		size;
+	t_lst	*tmp;
+
+	if (!lst)
+		return (0);
+	tmp = lst;
+	size = 0;
+	while (tmp)
+	{
+		size++;
+		tmp = tmp->next;
+	}
+	return (size);
+}

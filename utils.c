@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 21:04:40 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/01 14:09:04 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/03 21:02:43 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,16 @@ char	*multi_join(char	*str, int i, int j)
 	return (res);
 }
 
-char	*multi_join2(char	*s1, char	*s2, int *i, int j)
+char	*multi_join2(char	*s1, char	*s2, int i, int j)
 {
 	char	*res;
 	char	*tmp;
 
 	res = ft_substr(s1, 0, j);
-	tmp = ft_strdup(s1 + *i);
+	tmp = ft_strdup(s1 + i);
 	free(s1);
 	res = ft_strjoin(res, s2);
-	*i = ft_strlen(res);
+	i = ft_strlen(res);
 	res = ft_strjoin(res, tmp);
 	free(s2);
 	free(tmp);

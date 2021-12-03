@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:14:42 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/01 18:03:47 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/03 21:30:14 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static char	*input(char	*str, int *i)
 	
 	j = 0;
 	filename = get_filename(str, *i + 1, &j);
-	if (!filename)
+	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
 	{
-		printf("minishell: parse error\n");
+		ft_putendl_fd("Redirect error", 2);
 		free(str);
 		return (NULL);
 	}
@@ -45,9 +45,9 @@ static char	*trunc_out(char	*str, int *i)
 	
 	j = 0;
 	filename = get_filename(str, *i + 1, &j);
-	if (!filename)
+	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
 	{
-		printf("minishell: parse error\n");
+		ft_putendl_fd("Redirect error", 2);
 		free(str);
 		return (NULL);
 	}
@@ -67,7 +67,7 @@ static char	*heredoc(char	*str, int *i)
 	lim = get_filename(str, *i + 2, &j);
 	if (!lim)
 	{
-		printf("minishell: parse error\n");
+		ft_putendl_fd("Redirect error", 2);
 		free(str);
 		return (NULL);
 	}
@@ -95,9 +95,9 @@ static char	*append_out(char	*str, int *i)
 	
 	j = 0;
 	filename = get_filename(str, *i + 2, &j);
-	if (!filename)
+	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
 	{
-		printf("minishell: parse error\n");
+		ft_putendl_fd("Redirect error", 2);
 		free(str);
 		return (NULL);
 	}
@@ -111,17 +111,27 @@ char	*redirect(char	*str)
 {
 	int	i;
 
-	i = -1;
-	while (*(str + ++i + 1))
+	i = 0;
+	if (!*(str + i + 1) && (*(str + i) == '<' || *(str + i) == '>'))
+	{
+		ft_putendl_fd("Redirect error", 2);
+		free(str);
+		return (NULL);
+	}
+	while (*(str + i + 1))
 	{
 		if (*(str + i) == '<' && *(str + i + 1) != '<')
 			str = input(str, &i);
-		if (*(str + i) == '<' && *(str + i + 1) == '<')
+		else if (*(str + i) == '<' && *(str + i + 1) == '<')
 			str = heredoc(str, &i);
-		if (*(str + i) == '>' && *(str + i + 1) != '>')
+		else if (*(str + i) == '>' && *(str + i + 1) != '>')
 			str = trunc_out(str, &i);
-		if (*(str + i) == '>' && *(str + i + 1) == '>')
+		else if (*(str + i) == '>' && *(str + i + 1) == '>')
 			str = append_out(str, &i);
+		else
+			i++;
+		if (!str)
+			break ;
 	}
 	return (str);
 }

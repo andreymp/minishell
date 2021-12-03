@@ -34,9 +34,12 @@ int		mini_pwd(void);
 int		mini_cd(char *path, t_lst	**list);
 void	mini_exit(char *str);
 int		mini_env(t_lst *list);
-int		mini_export(t_lst **list, char *str);
+int		mini_export(t_lst **list, char **str);
 void	del(void *var);
 char	*pwd_cur(void);
-int		mini_unset(t_lst **list, char *str);
+int		mini_unset(t_lst **list, char **str);
+int 	mini_history(t_list	*history);
+int		ft_lstsize_rem(t_lst	*lst);
+t_list	*make_history(char	*str, t_list	*lst);
 
 #endif
