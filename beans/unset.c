@@ -21,8 +21,8 @@ int	mini_unset(t_list **list, char **str)
 			{
 				last = (*list)->next;
 				ft_lstdelone(*list, del);
-				list = &last;
-				ft_lstadd_back(list, ft_lstnew(tmp));
+				*list = last;
+				break ;
 			}
 			list = &(*list)->next;
 		}

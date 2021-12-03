@@ -11,6 +11,7 @@
 # include <errno.h>
 # include <sys/ioctl.h>
 # include <signal.h>
+# include <termios.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -43,5 +44,6 @@ int		mini_env(t_list *list);
 int		mini_export(t_list **list, char **str);
 void	del(void *var);
 int		mini_unset(t_list **list, char **str);
+void	dollar(char *str, int ex_code);
 
 #endif

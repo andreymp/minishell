@@ -1,6 +1,6 @@
 NAME	=	minishell
 SRCS	=	minishell.c utils.c beans/echo.c beans/pwd.c beans/cd.c beans/exit.c \
-	beans/env.c lists.c beans/export.c utils2.c beans/unset.c
+	beans/env.c lists.c beans/export.c utils2.c beans/unset.c dolla_qm.c
 CC		=	gcc
 CFLAGS	=	-Wall -Werror -Wextra
 OBJS	=	${SRCS:.c=.o}

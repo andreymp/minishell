@@ -29,7 +29,7 @@ t_list	*envp_copy(char *envp[])
 void	actions(int signal_num, siginfo_t *info, void *old_info)
 {
 	int	i;
-
+	
 	i = 0;
 	(void)old_info;
 	(void)info;
@@ -43,13 +43,7 @@ void	actions(int signal_num, siginfo_t *info, void *old_info)
 	{
 		rl_on_new_line();
 		rl_redisplay();
-	}
-	else if (signal_num == EOF)
-	{
-		write(2, "exit", 4);
-		exit(0);
-	}
-		
+	}	
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -60,34 +54,28 @@ int	main(int argc, char *argv[], char *envp[])
 	int					ex_code;
 	struct sigaction	sig;
 	
-	char	*test[5];
-	test[4] = NULL;
+	char	*test[3];
+	test[2] = NULL;
 	(void)argc;
 	(void)argv;
 	i = 0;
-	ex_code = 0;
+	ex_code = 130;
 	list = envp_copy(envp);
 	sig.sa_sigaction = actions;
 	sig.sa_flags = SA_SIGINFO;
 	while (1)
 	{
-		//str[i] = readline("minishell> ");
 		sigaction(SIGINT, &sig, NULL);
 		sigaction(SIGQUIT, &sig, NULL);
 		sigaction(EOF, &sig, NULL);
 		str[i] = readline("minishell> ");
+		if (str[i] == NULL)					// ctrl-D fix
+		{
+			write(2, "exit\n", 5);
+			exit(0);
+		}
 		add_history(str[i]);
-		test[i] = str[i];
-		if (i > 2)
-		//{
-		//	mini_env(list);
-		//	write(1, "\n\n", 2);
-		//	mini_export(&list, test);
-		//	mini_env(list);
-		//	write(1, "\n\n", 2);
-		//	mini_unset(&list, test);
-		//	mini_env(list);
-		//}
+		dollar(str[i], ex_code);
 		//ex_code = mini_echo(str[i], 0, ex_code);
 		i++;
 	}

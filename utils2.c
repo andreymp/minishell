@@ -55,16 +55,16 @@ char	*ft_itoa(int n)
 	if (n < 0)
 	{
 		*res = '-';
-		n *= -1;
+		n = n * -1;
 	}
 	while (i && n / 10)
 	{
-		*(res + i) = n % 10 + 48;
-		n /= 10;
+		res[i] = n % 10 + 48;
+		n = n / 10;
 		i--;
 	}
-	*(res + i) = n + 48;
-	*(res + length) = '\0';
+	res[i] = n + 48;
+	res[length] = '\0';
 	return (res);
 }
 
