@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 21:04:40 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/03 21:02:43 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 21:17:56 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*get_filename(char	*str, int i, int *j)
 
 bool	ft_iskey(char c)
 {
-	return (c == '_' || (bool) ft_isalnum((int) c));
+	return (c == '_' || ft_isalnum(c));
 }
 
 char	*multi_join(char	*str, int i, int j)

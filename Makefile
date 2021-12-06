@@ -25,6 +25,7 @@ SRC =   parcer.c	\
 		beans/unset.c  \
 		minishell.c	   \
 		beans/history.c	\
+		beans/exec.c \
 
 
 INC = 	-I libft/libft.h 	\
@@ -42,7 +43,7 @@ LD_FLAGS =	-L libft \
 
 .PHONY :	all clean re fclean
 
-.c.o :		
+.c.o :	
 		$(CC) $(CFLAGS) $(INC) -c $< -o $(<:.c=.o)
 
 

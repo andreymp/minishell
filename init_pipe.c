@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:20:27 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/02 10:08:39 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 20:32:44 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_cmd_path(t_cmd	**cmds)
 	}
 	if (!(*cmds)->mypaths[i])
 	{
-		ft_putstr_fd("minishell: command not found: ", 2);
+		ft_putstr_fd(ERROR"minishell: command not found: "TEXT, 2);
 		ft_putendl_fd((*cmds)->lst->cmd[0], 2);
 	}
 }

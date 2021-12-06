@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:36:45 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/03 19:50:34 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 20:44:27 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static void	parents(t_proccess	**proc)
 {
 	dup2((*proc)->fds[0], STDIN_FILENO);
 	close((*proc)->fds[1]);
-	close((*proc)->fds[0]);
-	//waitpid(0, NULL, 0);	
+	close((*proc)->fds[0]);	
 }
 
 static void	pipex(t_cmd	*cmds, char	**envp, t_proccess	*proc)
@@ -41,6 +40,9 @@ static void	pipex(t_cmd	*cmds, char	**envp, t_proccess	*proc)
 
 void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst)
 {
+	int	size;
+
+	size = ft_lstsize(lst);
 	init_env(envp, cmds);
 	while (lst->next)
 	{
@@ -60,14 +62,6 @@ void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst)
 	if (!proc->parent)
 		execve(cmds->cmd_path, cmds->lst->cmd, envp);
 	else
-	{
-	// 	while (tmp)
-	// 	{
-			// dup2(proc->fds[0], STDIN_FILENO);
-			// close(proc->fds[0]);
-			// close(proc->fds[1]);
+		while (size--)
 	 		waitpid(proc->parent, NULL, 0);
-			// tmp = tmp->next;
-	//	}
-	}
 }

@@ -6,13 +6,13 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:44 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/03 11:39:45 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 15:49:28 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	mini_pwd(void)
+int	mini_pwd(bool	*flag)
 {
 	char	*dir;
 	int		size;
@@ -34,6 +34,7 @@ int	mini_pwd(void)
 		}	
 		free(dir);
 	}
+	*flag = true;
 	return (0);
 }
 

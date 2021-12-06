@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:36:41 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/01 18:04:19 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 16:22:59 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef struct s_cmd
 	t_list	*lst;
 	char	**mypaths;
 	char	*cmd_path;
+	int		in;
+	int		out;
 }				t_cmd;
 
 typedef struct s_proccess

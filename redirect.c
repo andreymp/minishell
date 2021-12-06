@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:14:42 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/03 21:30:14 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 20:35:48 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static char	*input(char	*str, int *i)
 	filename = get_filename(str, *i + 1, &j);
 	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
 	{
-		ft_putendl_fd("Redirect error", 2);
+		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("minishell: no such file or directory: %s", filename);
+		printf(ERROR"minishell: no such file or directory: %s\n"TEXT, filename);
 		return (free_fd(str, filename, j, *i));
 	}
 	dup2(fd, STDIN_FILENO);
@@ -47,7 +47,7 @@ static char	*trunc_out(char	*str, int *i)
 	filename = get_filename(str, *i + 1, &j);
 	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
 	{
-		ft_putendl_fd("Redirect error", 2);
+		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}
@@ -67,14 +67,14 @@ static char	*heredoc(char	*str, int *i)
 	lim = get_filename(str, *i + 2, &j);
 	if (!lim)
 	{
-		ft_putendl_fd("Redirect error", 2);
+		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}
-	fd = open("heredoc", O_RDWR, 0777);
+	fd = open("heredoc", O_RDWR | O_TRUNC, 0777);
 	while (1)
 	{
-		ft_putstr_fd("heredoc> ", 2);
+		ft_putstr_fd(MINISHELL"heredoc> "TEXT, 2);
 		line = get_next_line(0);
 		if (!ft_strncmp(line, lim, ft_strlen(lim)))
 			break ;
@@ -97,7 +97,7 @@ static char	*append_out(char	*str, int *i)
 	filename = get_filename(str, *i + 2, &j);
 	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
 	{
-		ft_putendl_fd("Redirect error", 2);
+		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}
@@ -114,7 +114,7 @@ char	*redirect(char	*str)
 	i = 0;
 	if (!*(str + i + 1) && (*(str + i) == '<' || *(str + i) == '>'))
 	{
-		ft_putendl_fd("Redirect error", 2);
+		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}

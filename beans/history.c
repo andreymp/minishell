@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 15:37:00 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/03 17:47:13 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 15:57:21 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	print(t_list	*lst, int i)
 	}
 }
 
-int mini_history(t_list	*history)
+int mini_history(t_list	*history, bool *flag)
 {
     int i;
 	int	size;
@@ -52,5 +52,6 @@ int mini_history(t_list	*history)
 		}
 		print(history, size - i);
 	}
+	*flag = true;
 	return (0);
 }

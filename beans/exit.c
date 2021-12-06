@@ -6,27 +6,13 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:55 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/03 11:39:56 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 15:56:21 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_isdigit(int c)
-{
-	char	i;
-
-	i = '0';
-	while (i < 58)
-	{
-		if (i == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	mini_exit(char *str)
+void	mini_exit(char *str, bool *flag)
 {
 	int	exit_code;
 	int	i;
@@ -46,5 +32,6 @@ void	mini_exit(char *str)
 		exit_code = 256 + exit_code;
 	while(exit_code > 255)
 		exit_code = exit_code - 256;
+	*flag = true;
 	exit(exit_code);
 }

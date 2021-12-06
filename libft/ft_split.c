@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 14:03:53 by jobject           #+#    #+#             */
-/*   Updated: 2021/10/08 15:54:54 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 13:23:03 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ char	**ft_split(char const	*s, char c)
 	char	**strs;
 
 	if (!s)
-		return (0);
+		return (NULL);
 	strs = (char **) ft_calloc(get_size(s, c), sizeof(char *));
 	if (!strs)
-		return (0);
+		return (NULL);
 	filler(s, c, strs);
 	return (strs);
 }

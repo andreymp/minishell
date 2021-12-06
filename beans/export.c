@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:38 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/03 12:02:47 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/06 15:57:37 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	if_same(t_lst **list, char *str)
 	return (0);
 }
 
-int	mini_export(t_lst **list, char **str)
+int	mini_export(t_lst **list, char **str, bool *flag)
 {
 	int		i;
 	int		j;
@@ -59,7 +59,7 @@ int	mini_export(t_lst **list, char **str)
 	i = 0;
 	if (!str[j])
 	{
-		mini_env(*list);
+		mini_env(*list, flag);
 		return (0);
 	}
 	last = ft_lstlast_rem(*list);
@@ -80,5 +80,6 @@ int	mini_export(t_lst **list, char **str)
 		j++;
 	}
 	ft_lstadd_back_rem(list, ft_lstnew_rem(tmp));
+	*flag = true;
 	return (0);
 }
