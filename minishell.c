@@ -28,22 +28,24 @@ t_list	*envp_copy(char *envp[])
 
 void	actions(int signal_num, siginfo_t *info, void *old_info)
 {
-	int	i;
-	
-	i = 0;
 	(void)old_info;
 	(void)info;
 	if (signal_num == SIGINT)
 	{
-		write(2, "\n", 1);
+		ft_putstr_fd("\n", 2);
 		rl_on_new_line();
-        rl_redisplay();
+        rl_replace_line("", 0);
+		if	(g_sig.pid == 0)
+			rl_redisplay();
 	}
 	else if (signal_num == SIGQUIT)
 	{
 		rl_on_new_line();
-		rl_redisplay();
-	}	
+		if (g_sig.pid == 0)
+			rl_redisplay();
+		else
+			ft_putstr_fd("\b\bquit\n", 1);
+	}
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -67,7 +69,6 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		sigaction(SIGINT, &sig, NULL);
 		sigaction(SIGQUIT, &sig, NULL);
-		sigaction(EOF, &sig, NULL);
 		str[i] = readline("minishell> ");
 		if (str[i] == NULL)					// ctrl-D fix
 		{
@@ -75,7 +76,8 @@ int	main(int argc, char *argv[], char *envp[])
 			exit(0);
 		}
 		add_history(str[i]);
-		dollar(str[i], ex_code);
+		//execve("/bin/l", argv, envp);
+		//dollar(str[i], ex_code);
 		//ex_code = mini_echo(str[i], 0, ex_code);
 		i++;
 	}

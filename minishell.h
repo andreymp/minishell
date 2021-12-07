@@ -22,6 +22,14 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
+typedef struct s_sig
+{
+	pid_t	pid;
+	int		ex_code;
+}				t_sig;
+
+struct s_sig	g_sig;
+
 /* либовские ф-ци, нужно будет удалить 😇 */
 void	ft_putstr_fd(char *s, int fd);
 int		ft_atoi(const char *str);
