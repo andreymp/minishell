@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:20:27 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 20:32:44 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 15:44:24 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipe.h"
+#include "../includes/minishell.h"
 
 char	*double_join(char	*s1, char	*s2)
 {
@@ -45,16 +45,24 @@ void	init_cmd_path(t_cmd	**cmds)
 	{
 		ft_putstr_fd(ERROR"minishell: command not found: "TEXT, 2);
 		ft_putendl_fd((*cmds)->lst->cmd[0], 2);
+		g_exit = 127;
 	}
 }
 
-void	init_env(char	**envp, t_cmd	*cmds)
+bool	init_env(t_lst	*list, t_cmd	*cmds)
 {
 	int		i;
 
 	i = 0;
-	while (envp[i] && ft_strncmp("PATH", envp[i], ft_strlen("PATH")))
-		i++;
-	if (envp[i])
-		cmds->mypaths = ft_split(envp[i] + 5, ':');
+	while (list && ft_strncmp("PATH", list->var, ft_strlen("PATH")))
+		list = list->next;
+	if (list)
+		cmds->mypaths = ft_split(list->var + 5, ':');
+	else
+	{
+		ft_putendl_fd(ERROR"minishell: PATH not found"TEXT, 2);
+		g_exit = 127;
+		return (false);
+	}
+	return (true);
 }

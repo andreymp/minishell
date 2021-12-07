@@ -6,13 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 12:28:54 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 20:02:54 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 18:11:01 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
-#include "pipe.h"
+#include "../includes/minishell.h"
 
 void	free_mem(char	**strs)
 {
@@ -24,13 +22,13 @@ void	free_mem(char	**strs)
 	free(strs);
 }
 
-void	actions(int signal_num, siginfo_t *info, void *old_info)
+void	actions(int signal_num, siginfo_t __unused *info, void __unused *old_info)
 {
-	(void)old_info;
-	(void)info;
+	// (void)old_info;
+	// (void)info;
 	if (signal_num == SIGINT)
 	{
-		write(1, "\n", 1);
+		ft_putstr_fd("\n", 2);
 		rl_on_new_line();
         rl_replace_line("", 0);
 		rl_redisplay();
@@ -38,6 +36,7 @@ void	actions(int signal_num, siginfo_t *info, void *old_info)
 	else if (signal_num == SIGQUIT)
 	{
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}	
 }
@@ -55,6 +54,7 @@ t_mini	*zero_init(char	**envp)
 	mini->change.pipe = 3;
 	mini->change.point_coma = 4;
 	mini->change.tilda = 5;
+	mini->change.gap = 6;
 	mini->list = envp_copy(envp);
 	mini->cmds.in = dup(STDIN_FILENO);
 	mini->cmds.out = dup(STDOUT_FILENO);
@@ -65,13 +65,14 @@ t_mini	*zero_init(char	**envp)
 	return (mini);
 }
 
-int main(int argc, char	**argv, char	**envp)
+int main(int __unused argc, char	__unused **argv, char	**envp)
 {
 	t_mini		*mini;
 	char		*strs[10000];
 	
-	(void) argc;
-	(void) argv;
+	// (void) argc;
+	// (void) argv;
+	g_exit = 0;
 	mini = zero_init(envp);
 	if (!mini)
 		return (1);

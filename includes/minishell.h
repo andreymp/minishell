@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/07 14:41:35 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/07 15:10:46 by jobject          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -16,11 +28,7 @@
 # include "parser.h"
 # include "pipe.h"
 
-typedef struct s_lst
-{
-	char			*var;
-	struct s_lst	*next;
-}				t_lst;
+int	g_exit;
 
 typedef struct	s_mini
 {
@@ -32,7 +40,6 @@ typedef struct	s_mini
 	t_inside_gap_2		change;
 	struct sigaction	sig;
 }				t_mini;
-
 
 t_lst	*ft_lstnew_rem(void	*content);
 void	ft_lstdelone_rem(t_lst	*lst, void (*del)(void *));

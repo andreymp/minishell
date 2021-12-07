@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 12:24:18 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 21:34:55 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 20:20:08 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../includes/minishell.h"
 
 char	*do_gap(char	*str, int	i)
 {
@@ -18,12 +18,12 @@ char	*do_gap(char	*str, int	i)
 
 	j = i;
 	i++;
-	while (*(str + i) && *(str + i) != '\'')
+	while (*(str + i) ) //&& *(str + i) != '\'')
 		i++;
 	return (multi_join(str, i, j));
 }
 
-char	*do_dollar(char	*str, int	i, char	**envp)
+char	*do_dollar(char	*str, int	i, t_lst	*list)
 {
 	char	*res;
 	char	*tmp;
@@ -35,19 +35,20 @@ char	*do_dollar(char	*str, int	i, char	**envp)
 	res = NULL;
 	while (*(str + i) && ft_iskey(*(str + i)))
 		i++;
-	if (i == j + 1)
+	if (i == j + 1 || (*str + i) == '?')
 		return (str);
 	tmp = ft_substr(str, j + 1, i - j - 1);
 	c = -1;
-	while (envp[++c])
+	while (list)
 	{
-		if (!ft_strncmp(envp[c], tmp, ft_strlen(tmp))
-			&& *(envp[c] + ft_strlen(tmp)) == '=')
+		if (!ft_strncmp(list->var, tmp, ft_strlen(tmp))
+			&& *(list->var + ft_strlen(tmp)) == '=')
 			break ;
+		list = list->next;
 	}
-	if (envp[c])
+	if (list)
 	{
-		res = ft_strdup(envp[c] + ft_strlen(tmp) + 1);
+		res = ft_strdup(list->var + ft_strlen(tmp) + 1);
 		free(tmp);
 		return (multi_join2(str, res, i, j));
 	}
@@ -60,7 +61,7 @@ char	*do_dollar(char	*str, int	i, char	**envp)
 	return (res);
 }
 
-char	*do_gap2(char	*str, int i, char	**envp, t_inside_gap_2 change)
+char	*do_gap2(char	*str, int i, t_lst	*list, t_inside_gap_2 change)
 {
 	int	j;
 
@@ -69,7 +70,7 @@ char	*do_gap2(char	*str, int i, char	**envp, t_inside_gap_2 change)
 	while (*(str + i) && *(str + i) != '\"')
 	{
 		if (*(str + i) == '$')
-			str = do_dollar(str, i, envp);
+			str = do_dollar(str, i, list);
 		if (*(str + i) == '|')
 			*(str + i) = change.pipe;
 		if (*(str + i) == '<')
@@ -80,6 +81,8 @@ char	*do_gap2(char	*str, int i, char	**envp, t_inside_gap_2 change)
 			*(str + i) = change.point_coma;
 		if (*(str + i) == '~')
 			*(str + i) = change.tilda;
+		if (*(str + i) == '\'')
+			*(str + i) = change.gap;
 		i++;
 	}
 	return (multi_join(str, i, j));

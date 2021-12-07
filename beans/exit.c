@@ -6,32 +6,34 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:55 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 15:56:21 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 21:22:17 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
 void	mini_exit(char *str, bool *flag)
 {
-	int	exit_code;
 	int	i;
 
-	i = 0;
-	while (str[i] != '\0')
+	i = -1;
+	if (str)
 	{
-		if (ft_isdigit(str[i]) == 0 && str[i] != '-')
-		{
-			write(2, "exit\n", 5);
-			exit(255);
-		}
-		i++;
+		while (str[++i])
+			if (!ft_isdigit(str[i]) && str[i] != '-')
+			{
+				write(2, "exit\n", 5);
+				ft_putendl_fd(ERROR"minishell: exit: a: numeric argument required"TEXT, 2);
+				g_exit = 255;
+				exit(g_exit);
+			}
+		g_exit = ft_atoi(str);
 	}
-	exit_code = ft_atoi(str);
-	while (exit_code < 0)
-		exit_code = 256 + exit_code;
-	while(exit_code > 255)
-		exit_code = exit_code - 256;
+	while (g_exit < 0)
+		g_exit = 256 + g_exit;
+	while(g_exit > 255)
+		g_exit = g_exit - 256;
 	*flag = true;
-	exit(exit_code);
+	write(2, "exit\n", 5);
+	exit(g_exit);
 }

@@ -6,12 +6,28 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:36:45 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 20:44:27 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 20:29:14 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "pipe.h"
+#include "../includes/minishell.h"
+
+bool	check_pipes(char	*str)
+{
+	int		i;
+	t_pre	pip;
+
+	i = -1;
+	pip.pipes = 0;
+	while (*(str + ++i))
+	{
+		if (*(str + i) == '|')
+			pip.pipes++;
+	}
+	if (pip.pipes != get_size_pipes(str, '|') - 1 && pip.pipes != 0)
+		return (false);
+	return (true);
+}
 
 static void	child(t_cmd	*cmds, char	**envp, t_proccess	**proc)
 {
@@ -38,12 +54,13 @@ static void	pipex(t_cmd	*cmds, char	**envp, t_proccess	*proc)
 		parents(&proc);
 }
 
-void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst)
+void	run(t_cmd	*cmds, t_lst	*list, t_proccess	*proc, t_list	*lst, char	**envp)
 {
 	int	size;
 
 	size = ft_lstsize(lst);
-	init_env(envp, cmds);
+	if (!init_env(list, cmds))
+		return ;
 	while (lst->next)
 	{
 		cmds->lst = lst;
@@ -63,5 +80,6 @@ void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst)
 		execve(cmds->cmd_path, cmds->lst->cmd, envp);
 	else
 		while (size--)
-	 		waitpid(proc->parent, NULL, 0);
+	 		waitpid(proc->parent, &g_exit, 0);
+	g_exit = WEXITSTATUS(g_exit);
 }

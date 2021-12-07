@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:14:42 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 20:35:48 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 12:14:51 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../includes/minishell.h"
 
 static char	*input(char	*str, int *i)
 {

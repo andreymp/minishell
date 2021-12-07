@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 16:56:16 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/02 09:12:40 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 12:17:04 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 static char	*get_after(char	*str)
 {

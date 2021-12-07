@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 16:56:06 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/01 13:17:28 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 12:17:12 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 size_t	ft_strlengnl(const char	*str)
 {

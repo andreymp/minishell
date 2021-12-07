@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:38 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 15:57:37 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 18:25:57 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
 t_lst	*ft_lstlastlast(t_lst *lst)
 {
@@ -81,5 +81,6 @@ int	mini_export(t_lst **list, char **str, bool *flag)
 	}
 	ft_lstadd_back_rem(list, ft_lstnew_rem(tmp));
 	*flag = true;
+	g_exit = 0;
 	return (0);
 }

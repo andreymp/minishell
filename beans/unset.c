@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:49 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 20:42:16 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 15:41:51 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
 int	mini_unset(t_lst **list, char **str, bool *flag)
 {
@@ -24,6 +24,7 @@ int	mini_unset(t_lst **list, char **str, bool *flag)
 	if (!str[j])
 	{
 		ft_putendl_fd(ERROR"unset: not enough arguments"TEXT, 2);
+		g_exit = 1;
 		return (0);
 	}
 	last = ft_lstlast_rem(*list);
@@ -45,5 +46,6 @@ int	mini_unset(t_lst **list, char **str, bool *flag)
 		i = 0;
 		j++;
 	}
+	g_exit = 0;
 	return (0);
 }

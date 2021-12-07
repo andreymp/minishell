@@ -5,17 +5,17 @@ CFLAGS =	-g -Wall -Wextra -Werror -MMD
 
 RM =	rm -rf
 
-SRC =   parcer.c	\
-		utils.c 	\
-		utils1.c 	\
-		lists.c     \
-		do_symbol.c \
-		redirect.c  \
-		get_next_line.c \
-		get_next_line_utils.c \
-		main.c		\
-		init_pipe.c \
-		pipe.c		\
+SRC =   parse/parcer.c	\
+		utils/utils.c 	\
+		utils/utils1.c 	\
+		utils/lists.c     \
+		parse/do_symbol.c \
+		parse/redirect.c  \
+		utils/get_next_line.c \
+		utils/get_next_line_utils.c \
+		srcs/main.c		\
+		pipes/init_pipe.c \
+		pipes/pipe.c		\
 		beans/cd.c  \
 		beans/echo.c \
 		beans/env.c  \
@@ -23,16 +23,17 @@ SRC =   parcer.c	\
 		beans/export.c  \
 		beans/pwd.c  \
 		beans/unset.c  \
-		minishell.c	   \
+		srcs/minishell.c \
 		beans/history.c	\
 		beans/exec.c \
+		utils/utils2.c \
 
 
 INC = 	-I libft/libft.h 	\
-		-I parser.h         \
-		-I get_next_line.h	\
-		-I pipe.h			\
-		-I minishell.h		\
+		-I includes/parser.h         \
+		-I includes/get_next_line.h	\
+		-I includes/pipe.h			\
+		-I includes/minishell.h		\
 		-I /Users/${USER}/.brew/opt/readline/include \
 
 OBJS =	$(SRC:.c=.o)

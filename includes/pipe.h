@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:36:41 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 16:22:59 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 13:40:11 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ typedef struct s_proccess
 	pid_t	parent;
 }				t_proccess;
 
-void	init_env(char	**envp, t_cmd	*cmds);
+bool	init_env(t_lst	*list, t_cmd	*cmds);
 void	init_cmd_path(t_cmd	**cmds);
-void	run(t_cmd	*cmds, char	**envp, t_proccess	*proc, t_list	*lst);
+void	run(t_cmd	*cmds, t_lst	*list, t_proccess	*proc, t_list	*lst, char	**envp);
 
 #endif

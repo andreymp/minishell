@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 14:03:35 by jobject           #+#    #+#             */
-/*   Updated: 2021/10/08 14:11:10 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 15:50:47 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	ft_putnbr_fd(int n, int fd)
 	int		i;
 	char	res[11];
 
+	ft_bzero(res, 11);
 	if (n == -2147483648)
 	{
 		ft_putstr_fd("-2147483648", fd);

@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:40:07 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 20:28:19 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 15:01:42 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
 static void	change_pwd(char	*pwd, char	*old_pwd, t_lst	**list)
 {
@@ -20,6 +20,8 @@ static void	change_pwd(char	*pwd, char	*old_pwd, t_lst	**list)
 	tmp = *list;
 	while (tmp && ft_strncmp(tmp->var, "PWD=", 4))
 		tmp = tmp->next;
+	if (!tmp)
+		return ;
 	temp = ft_strdup("PWD=");
 	// free(tmp->var);
 	tmp->var = ft_strjoin(temp, pwd);
@@ -37,7 +39,9 @@ int	mini_cd(char *path, t_lst	**list, bool *flag)
 	char	*temp;
 	char	*pwd;
 	char	*old_pwd;
-	
+
+	*flag = true;
+	g_exit = 0;
 	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/"))
 	{
 		temp = ft_strdup("/Users/");
@@ -52,9 +56,9 @@ int	mini_cd(char *path, t_lst	**list, bool *flag)
 	{
 		ft_putstr_fd(ERROR"cd: no such file or directory: "TEXT, 2);
 		ft_putendl_fd(path, 2);
+		g_exit = 1;
 	}
 	pwd = pwd_cur();
 	change_pwd(pwd, old_pwd, list);
-	*flag = true;
 	return (0);
 }

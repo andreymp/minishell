@@ -6,12 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:31:43 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 21:32:10 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 20:20:55 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
+#include "../includes/minishell.h"
 
 void	make_split(t_list	**lst)
 {
@@ -68,32 +67,48 @@ static bool	preparser(char	*str)
 	return (true);
 }
 
-char	*parser(char	*str, char	**envp, t_inside_gap_2 change)
+char	*parser(char	*str, t_lst	*list, t_inside_gap_2 change)
 {
 	int	i;
+	int	flag;
 	
-	i = -1;
+	i = 0;
+	flag = 0;
 	if (!preparser(str))
 	{
-		ft_putendl_fd("Parsing error", 2);
+		ft_putendl_fd(ERROR"Parsing error (open gaps)"TEXT, 2);
 		return (NULL);
 	}
 	if (!ft_strncmp(str, "\"\"", 2) || !ft_strncmp(str, "\'\'", 2))
 		return (NULL);
-	while (*(str + ++i) && str)
+	while (*(str + i))
 	{
 		if (*(str + i) == '\'')
-			str = do_gap(str, i);
-		else if (*(str + i) == '\"')
-			str = do_gap2(str, i, envp, change);
-		else if (*(str + i) == '$')
-			str = do_dollar(str, i, envp);
+			while (*(str + i) == '\'')
+			{
+				flag++;
+				str = do_gap(str, i);
+			}
+		else if (*(str + i) == '\"' && flag % 2 == 0)
+			while (*(str + i) == '\"')
+				str = do_gap2(str, i, list, change);
+		else if (*(str + i) == '$' && ft_strncmp("$?", str + i, 2) && ft_strcmp(str + i, "$") && flag % 2 == 0)
+			while (*(str + i) == '$')
+				str = do_dollar(str, i, list);
 		else if (*(str + i) == '\\' || *(str + i) == ';')
 		{
 			free(str);
-			ft_putendl_fd(ERROR"Parsing error"TEXT, 2);
+			ft_putendl_fd(ERROR"Parsing error (undefined symbol)"TEXT, 2);
 			return (NULL);
 		}
+		else
+			i++;
+	}
+	if (!check_pipes(str))
+	{
+		free(str);
+		ft_putendl_fd(ERROR"Parsing error (pipes)"TEXT, 2);
+		return (NULL);
 	}
 	if (!str)
 		return (NULL);
@@ -101,31 +116,29 @@ char	*parser(char	*str, char	**envp, t_inside_gap_2 change)
 	return (str);
 }
 
-bool	result_line(char	**str, t_list	**history, char	**envp, t_inside_gap_2 change)
+bool	result_line(char	**str, t_list	**history, t_lst	*list, t_inside_gap_2 change)
 {
 	int	i;
 
 	if (!*str)
 	{
-		rl_replace_line("exit", 0);
-		rl_redisplay();
+		ft_putstr_fd("exit\n", 2);
 		exit(EXIT_FAILURE);
 	}
 	i = 0;
-	while (*str[i] && (*str[i] == ' ' || *str[i] == '\t'))
-		i++;
+	while (**str != '\0' && (**str == ' ' || **str == '\t'))
+		(*str)++;
 	if (!*str[i])
 		return (false);
-	if (ft_strcmp(*str, "history"))
-		*history = make_history(*str, *history);
+	*history = make_history(*str, *history);
 	add_history(*str);
-	*str = parser(*str, envp, change);
+	*str = parser(*str, list, change);
 	if (!*str)
 		return (false);
 	i = 0;
-	while (*str[i] && *str[i] == ' ')
+	while (str[0][i] && str[0][i] == ' ')
 		i++;
-	if (!*str[i])
+	if (!str[0][i])
 		return (false);
 	return (true);
 }

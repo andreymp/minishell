@@ -6,11 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 15:37:00 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/06 15:57:21 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/07 15:41:17 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
 t_list	*make_history(char	*str, t_list	*lst)
 {
@@ -53,5 +53,6 @@ int mini_history(t_list	*history, bool *flag)
 		print(history, size - i);
 	}
 	*flag = true;
+	g_exit = 0;
 	return (0);
 }
