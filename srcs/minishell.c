@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:00:36 by remelia           #+#    #+#             */
-/*   Updated: 2021/12/07 20:46:37 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 20:22:42 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ void	minishell(t_mini	*mini, char	**envp, char	*strs[])
 		sigaction(SIGQUIT, &mini->sig, NULL);
 		sigaction(SIGINT, &mini->sig, NULL);
 		strs[++i] = readline(MINISHELL"minishell $> "TEXT);
-		if (!result_line(&strs[i], &mini->history, mini->list, mini->change))
+		if (!result_line(&strs[i], &mini->history, mini))
 			continue ;
 		strs[i] = insert_inside_gap2(mini->change, strs[i]);
 		mini->lst = do_split(strs[i]);
 		make_split(&mini->lst);
-		if (!exec(mini->lst, mini->list, mini->change, mini->history, envp))
-			run(&mini->cmds, mini->list, &mini->proc, mini->lst, envp);
+		if (!exec(mini, envp))
+			run(&mini->cmds, &mini->proc, mini, envp);
 		ft_lstclear(&mini->lst, free);
 	}
 }

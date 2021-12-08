@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 15:37:00 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:41:17 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 11:49:47 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ int mini_history(t_list	*history, bool *flag)
 		print(history, size - i);
 	}
 	*flag = true;
-	g_exit = 0;
+	g_sig.ex_code = 0;
 	return (0);
 }

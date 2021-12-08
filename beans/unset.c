@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:49 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:41:51 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 11:49:58 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	mini_unset(t_lst **list, char **str, bool *flag)
 	if (!str[j])
 	{
 		ft_putendl_fd(ERROR"unset: not enough arguments"TEXT, 2);
-		g_exit = 1;
+		g_sig.ex_code = 1;
 		return (0);
 	}
 	last = ft_lstlast_rem(*list);
@@ -46,6 +46,6 @@ int	mini_unset(t_lst **list, char **str, bool *flag)
 		i = 0;
 		j++;
 	}
-	g_exit = 0;
+	g_sig.ex_code = 0;
 	return (0);
 }

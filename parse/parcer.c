@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:31:43 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 20:20:55 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 20:24:50 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static bool	preparser(char	*str)
 	return (true);
 }
 
-char	*parser(char	*str, t_lst	*list, t_inside_gap_2 change)
+char	*parser(char	*str, t_mini	*mini)
 {
 	int	i;
 	int	flag;
@@ -91,10 +91,10 @@ char	*parser(char	*str, t_lst	*list, t_inside_gap_2 change)
 			}
 		else if (*(str + i) == '\"' && flag % 2 == 0)
 			while (*(str + i) == '\"')
-				str = do_gap2(str, i, list, change);
+				str = do_gap2(str, i, mini->list, mini->change);
 		else if (*(str + i) == '$' && ft_strncmp("$?", str + i, 2) && ft_strcmp(str + i, "$") && flag % 2 == 0)
 			while (*(str + i) == '$')
-				str = do_dollar(str, i, list);
+				str = do_dollar(str, i, mini->list);
 		else if (*(str + i) == '\\' || *(str + i) == ';')
 		{
 			free(str);
@@ -116,7 +116,7 @@ char	*parser(char	*str, t_lst	*list, t_inside_gap_2 change)
 	return (str);
 }
 
-bool	result_line(char	**str, t_list	**history, t_lst	*list, t_inside_gap_2 change)
+bool	result_line(char	**str, t_list	**history, t_mini	*mini)
 {
 	int	i;
 
@@ -132,7 +132,7 @@ bool	result_line(char	**str, t_list	**history, t_lst	*list, t_inside_gap_2 chang
 		return (false);
 	*history = make_history(*str, *history);
 	add_history(*str);
-	*str = parser(*str, list, change);
+	*str = parser(*str, mini);
 	if (!*str)
 		return (false);
 	i = 0;

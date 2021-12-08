@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 11:50:06 by jobject          ###   ########.fr       */
+/*   Created: 2021/12/08 19:37:12 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/08 21:04:41 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	mini_env(t_lst *list, bool *flag)
+void 	mini_shlvl(t_mini	**mini, char	**envp, bool	*flag)
 {
-	while(list)
-	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
-	}
+	char	*tmp;
+	char	*sl;
+	t_lst	*temp;
+
 	*flag = true;
-	g_sig.ex_code = 0;
-	return (0);
+	temp = (*mini)->list;
+	signal(SIGINT, SIG_IGN);
+	(*mini)->shlvl++;
+	while (temp && ft_strncmp(temp->var, "SHLVL=", 6))
+		temp = temp->next;
+	if (!temp)
+	{
+		(*mini)->list = envp_copy(envp);
+		(*mini)->shlvl = 1;
+	}
+	else
+	{
+		tmp = ft_substr(temp->var, 0, 6);
+		sl = ft_itoa((*mini)->shlvl);
+		temp->var =ft_strjoin(tmp, sl);
+		free(sl);
+	}
 }

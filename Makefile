@@ -23,6 +23,8 @@ SRC =   parse/parcer.c	\
 		beans/export.c  \
 		beans/pwd.c  \
 		beans/unset.c  \
+		beans/dq.c	\
+		beans/shlvl.c	\
 		srcs/minishell.c \
 		beans/history.c	\
 		beans/exec.c \

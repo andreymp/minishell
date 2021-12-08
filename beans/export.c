@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:38 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 18:25:57 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 15:42:58 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,39 +48,50 @@ int	if_same(t_lst **list, char *str)
 	return (0);
 }
 
+void	print_sorted_env(t_lst	*list)
+{
+	char	*temp;
+	t_lst	*tmp1;
+	t_lst	*tmp2;
+
+	tmp1 = list;
+	while (tmp1->next)
+	{
+		tmp2 = tmp1->next;
+		while (tmp2)
+		{
+			if (ft_strcmp(tmp1->var, tmp2->var) > 0)
+			{
+				temp = tmp1->var;
+				tmp1->var = tmp2->var;
+				tmp2->var = temp;
+			}
+			tmp2 = tmp2->next;
+		}
+		tmp1 = tmp1->next;
+	}
+	while (list)
+	{
+		ft_putendl_fd(list->var, 1);
+		list = list->next;
+	}
+}
+
 int	mini_export(t_lst **list, char **str, bool *flag)
 {
-	int		i;
 	int		j;
 	char	*tmp;
 	t_lst	*last;
 
 	j = 1;
-	i = 0;
-	if (!str[j])
-	{
-		mini_env(*list, flag);
+	*flag = true;
+	g_sig.ex_code = 0;
+	if (!pre_export_check(str, *list))
 		return (0);
-	}
 	last = ft_lstlast_rem(*list);
 	tmp = last->var;
-	while (str[j])
-	{
-		while (str[j][i] && str[j][i] != '=')
-			i++;
-		if (!str[j][i])
-			return (0);
-		if (if_same(list, str[j]))
-			return (0);
-		if (j == 1)
-			ft_lstadd_preback(list, ft_lstnew_rem(str[j]));
-		else
-			ft_lstadd_back_rem(list, ft_lstnew_rem(str[j]));
-		i = 0;
-		j++;
-	}
+	if (!make_export(str, list))
+		return (0);
 	ft_lstadd_back_rem(list, ft_lstnew_rem(tmp));
-	*flag = true;
-	g_exit = 0;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 21:04:40 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 20:26:49 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 21:28:31 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ char	*get_filename(char	*str, int i, int *j)
 		return (NULL);
 	*j = i;
 	while (*(str + i) && *(str + i) != ' ')
+	{
+		if (*(str + i) == '>' && *(str + i - 1) == ' ')
+			return (NULL);
 		i++;
+	}
 	return (ft_substr(str, *j, i - *j));	
 }
 

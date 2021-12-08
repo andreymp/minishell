@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:40:07 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:01:42 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 11:50:23 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	mini_cd(char *path, t_lst	**list, bool *flag)
 	char	*old_pwd;
 
 	*flag = true;
-	g_exit = 0;
+	g_sig.ex_code = 0;
 	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/"))
 	{
 		temp = ft_strdup("/Users/");
@@ -56,7 +56,7 @@ int	mini_cd(char *path, t_lst	**list, bool *flag)
 	{
 		ft_putstr_fd(ERROR"cd: no such file or directory: "TEXT, 2);
 		ft_putendl_fd(path, 2);
-		g_exit = 1;
+		g_sig.ex_code = 1;
 	}
 	pwd = pwd_cur();
 	change_pwd(pwd, old_pwd, list);

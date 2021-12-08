@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 14:41:35 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:10:46 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 21:06:13 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,19 @@
 # include <errno.h>
 # include <sys/ioctl.h>
 # include <signal.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "parser.h"
 # include "pipe.h"
 
-int	g_exit;
+typedef struct s_sig
+{
+	pid_t	pid;
+	int		ex_code;
+}				t_sig;
+
+t_sig	g_sig;
 
 typedef struct	s_mini
 {
@@ -39,6 +46,7 @@ typedef struct	s_mini
 	t_proccess			proc;
 	t_inside_gap_2		change;
 	struct sigaction	sig;
+	int					shlvl;
 }				t_mini;
 
 t_lst	*ft_lstnew_rem(void	*content);
@@ -61,7 +69,18 @@ int 	mini_history(t_list	*history, bool *flag);
 int		ft_lstsize_rem(t_lst	*lst);
 t_list	*make_history(char	*str, t_list	*lst);
 void	make_split(t_list	**lst);
-bool	exec(t_list	*tmp, t_lst	*list, t_inside_gap_2	change, t_list	*history, char	**envp);
+bool	exec(t_mini	*mini, char	**envp);
 void	minishell(t_mini	*mini, char	**envp, char	*strs[]);
+void	mini_dq(char	*str, bool *flag);
+bool	pre_export_check(char	**strs, t_lst	*list);
+int		check_export_exception(char	*str, int *index);
+bool	make_export(char	**str, t_lst	**list);
+void	print_sorted_env(t_lst	*list);
+int		if_same(t_lst **list, char *str);
+void	ft_lstadd_preback(t_lst **lst, t_lst *new);
+void	run(t_cmd	*cmds, t_proccess	*proc, t_mini	*mini, char	**envp);
+bool	result_line(char	**str, t_list	**history, t_mini	*mini);
+char	*parser(char	*str, t_mini	*mini);
+void 	mini_shlvl(t_mini	**mini, char	**envp, bool	*flag);
 
 #endif

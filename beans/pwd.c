@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:44 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 14:59:25 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/08 11:49:52 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	mini_pwd(bool	*flag)
 		}	
 		free(dir);
 	}
-	g_exit = 0;
+	g_sig.ex_code = 0;
 	*flag = true;
 	return (0);
 }
