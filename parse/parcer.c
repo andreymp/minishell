@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:31:43 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 20:24:50 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 21:29:26 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_list	*do_split(char	*str)
 	i = 0;
 	lst = NULL;
 	strs = ft_split(str, '|');
-	// free(str);
 	while (strs[i])
 	{
 		if (!lst)
@@ -42,15 +41,14 @@ t_list	*do_split(char	*str)
 			ft_lstadd_back(&lst, ft_lstnew(strs[i]));
 		i++;
 	}
-	// free (strs);
 	return (lst);
 }
 
-static bool	preparser(char	*str)
+bool	preparser(char	*str)
 {
 	int		i;
 	t_pre	gaps;
-	
+
 	gaps.gap2 = 0;
 	gaps.gap = 0;
 	i = 0;
@@ -67,53 +65,33 @@ static bool	preparser(char	*str)
 	return (true);
 }
 
-char	*parser(char	*str, t_mini	*mini)
+char	*parser(char	*str, t_mini	*mini, int i, int flag)
 {
-	int	i;
-	int	flag;
-	
-	i = 0;
-	flag = 0;
-	if (!preparser(str))
-	{
-		ft_putendl_fd(ERROR"Parsing error (open gaps)"TEXT, 2);
-		return (NULL);
-	}
-	if (!ft_strncmp(str, "\"\"", 2) || !ft_strncmp(str, "\'\'", 2))
+	if (!pre_check(str))
 		return (NULL);
 	while (*(str + i))
 	{
 		if (*(str + i) == '\'')
+		{
 			while (*(str + i) == '\'')
 			{
 				flag++;
 				str = do_gap(str, i);
 			}
+		}
 		else if (*(str + i) == '\"' && flag % 2 == 0)
 			while (*(str + i) == '\"')
 				str = do_gap2(str, i, mini->list, mini->change);
-		else if (*(str + i) == '$' && ft_strncmp("$?", str + i, 2) && ft_strcmp(str + i, "$") && flag % 2 == 0)
+		else if (*(str + i) == '$' && ft_strncmp("$?", str + i, 2)
+			&& ft_strcmp(str + i, "$") && !was_heredoc(str) && flag % 2 == 0)
 			while (*(str + i) == '$')
 				str = do_dollar(str, i, mini->list);
 		else if (*(str + i) == '\\' || *(str + i) == ';')
-		{
-			free(str);
-			ft_putendl_fd(ERROR"Parsing error (undefined symbol)"TEXT, 2);
-			return (NULL);
-		}
+			return (return_message(str));
 		else
 			i++;
 	}
-	if (!check_pipes(str))
-	{
-		free(str);
-		ft_putendl_fd(ERROR"Parsing error (pipes)"TEXT, 2);
-		return (NULL);
-	}
-	if (!str)
-		return (NULL);
-	str = redirect(str);
-	return (str);
+	return (after_check(str));
 }
 
 bool	result_line(char	**str, t_list	**history, t_mini	*mini)
@@ -132,7 +110,7 @@ bool	result_line(char	**str, t_list	**history, t_mini	*mini)
 		return (false);
 	*history = make_history(*str, *history);
 	add_history(*str);
-	*str = parser(*str, mini);
+	*str = parser(*str, mini, 0, 0);
 	if (!*str)
 		return (false);
 	i = 0;

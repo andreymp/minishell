@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:20:27 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 11:53:08 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 20:33:22 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	init_cmd_path(t_cmd	**cmds)
 	}
 	while ((*cmds)->mypaths[i])
 	{
-		(*cmds)->cmd_path = double_join((*cmds)->mypaths[i], (*cmds)->lst->cmd[0]);
+		(*cmds)->cmd_path
+			= double_join((*cmds)->mypaths[i], (*cmds)->lst->cmd[0]);
 		if (!access((*cmds)->cmd_path, F_OK))
 			break ;
 		free((*cmds)->cmd_path);

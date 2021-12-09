@@ -6,75 +6,64 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:14:42 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 21:33:15 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 20:57:55 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char	*input(char	*str, int *i)
+static char	*input(char	*str, int *i, t_mini	**mini)
 {
 	char	*filename;
-	int		fd;
 	int		j;
-	
+
 	j = 0;
 	filename = get_filename(str, *i + 1, &j);
-	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
+	if (!filename || !ft_strncmp(filename, "<", 1)
+		|| !ft_strncmp(filename, ">", 1))
 	{
 		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
+	(*mini)->proc.fdin = open(filename, O_RDONLY);
+	if ((*mini)->proc.fdin < 0)
 	{
 		printf(ERROR"minishell: no such file or directory: %s\n"TEXT, filename);
 		return (free_fd(str, filename, j, *i));
 	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	dup2((*mini)->proc.fdin, STDIN_FILENO);
+	close((*mini)->proc.fdin);
 	return (free_fd(str, filename, j, *i));
 }
 
-static char	*trunc_out(char	*str, int *i)
+static char	*trunc_out(char	*str, int *i, t_mini	**mini)
 {
 	char	*filename;
-	int		fd;
 	int		j;
-	int		k;
-	
+
 	j = 0;
 	filename = get_filename(str, *i + 1, &j);
-	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
+	if (!filename || !ft_strncmp(filename, "<", 1)
+		|| !ft_strncmp(filename, ">", 1))
 	{
 		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}
-	k = 1;
-	while (*(filename + k))
-	{
-		if (ft_isdigit(*(filename + k - 1)) && *(filename + k) == '>')
-		{
-			ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
-			free(str);
-			return (NULL);
-		}
-		k++;
-	}
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	if (!check_filename(filename, str))
+		return (NULL);
+	(*mini)->proc.fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0777);
+	dup2((*mini)->proc.fdout, STDOUT_FILENO);
+	close((*mini)->proc.fdout);
 	return (free_fd(str, filename, j, *i));
 }
 
-static char	*heredoc(char	*str, int *i)
+static char	*heredoc(char	*str, int *i, t_mini	**mini)
 {
 	int		j;
-	int		fd;
 	char	*lim;
-	char	*line;
+	char	*tmp;
 
 	lim = get_filename(str, *i + 2, &j);
 	if (!lim)
@@ -83,51 +72,36 @@ static char	*heredoc(char	*str, int *i)
 		free(str);
 		return (NULL);
 	}
-	fd = open("heredoc", O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	while (1)
-	{
-		ft_putstr_fd(MINISHELL"heredoc> "TEXT, 2);
-		line = get_next_line(0);
-		if (!line)
-		{
-			g_sig.ex_code = 130;
-			ft_putstr_fd("\b\b\b\b\b\b\b\b\b\b\b\b\b", 1);
-			return (free_fd(str, lim, j, *i));
-		}
-		if (!ft_strncmp(line, lim, ft_strlen(lim)))
-			break ;
-		ft_putstr_fd(line, fd);
-		free(line);
-	}
-	close(fd);
-	free(line);
-	fd = open("heredoc", O_RDONLY, 0777);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	tmp = read_heredoc(lim, str, *i, j);
+	if (tmp)
+		return (tmp);
+	(*mini)->proc.fdin = open("heredoc", O_RDONLY, 0777);
+	dup2((*mini)->proc.fdin, STDIN_FILENO);
+	close((*mini)->proc.fdin);
 	return (free_fd(str, lim, j, *i));
 }
 
-static char	*append_out(char	*str, int *i)
+static char	*append_out(char	*str, int *i, t_mini	**mini)
 {
 	char	*filename;
-	int		fd;
 	int		j;
-	
+
 	j = 0;
 	filename = get_filename(str, *i + 2, &j);
-	if (!filename || !ft_strncmp(filename, "<", 1) || !ft_strncmp(filename, ">", 1))
+	if (!filename || !ft_strncmp(filename, "<", 1)
+		|| !ft_strncmp(filename, ">", 1))
 	{
 		ft_putendl_fd(ERROR"Redirect error"TEXT, 2);
 		free(str);
 		return (NULL);
 	}
-	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	(*mini)->proc.fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	dup2((*mini)->proc.fdout, STDOUT_FILENO);
+	close((*mini)->proc.fdout);
 	return (free_fd(str, filename, j, *i));
 }
 
-char	*redirect(char	*str)
+char	*redirect(char	*str, t_mini	**mini)
 {
 	int	i;
 
@@ -141,13 +115,13 @@ char	*redirect(char	*str)
 	while (*(str + i + 1))
 	{
 		if (*(str + i) == '<' && *(str + i + 1) != '<')
-			str = input(str, &i);
+			str = input(str, &i, mini);
 		else if (*(str + i) == '<' && *(str + i + 1) == '<')
-			str = heredoc(str, &i);
+			str = heredoc(str, &i, mini);
 		else if (*(str + i) == '>' && *(str + i + 1) != '>')
-			str = trunc_out(str, &i);
+			str = trunc_out(str, &i, mini);
 		else if (*(str + i) == '>' && *(str + i + 1) == '>')
-			str = append_out(str, &i);
+			str = append_out(str, &i, mini);
 		else
 			i++;
 		if (!str)

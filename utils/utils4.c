@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.h                                             :+:      :+:    :+:   */
+/*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 16:36:41 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 17:52:27 by jobject          ###   ########.fr       */
+/*   Created: 2021/12/09 21:17:11 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/09 21:24:36 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPE_H
-# define PIPE_H
+#include "../includes/minishell.h"
 
-# include "parser.h"
-# include <sys/wait.h>
-# include <sys/types.h>
-
-typedef struct s_cmd
+bool	pre_check(char	*str)
 {
-	t_list	*lst;
-	char	**mypaths;
-	char	*cmd_path;
-	int		in;
-	int		out;
-}				t_cmd;
+	if (!preparser(str))
+	{
+		ft_putendl_fd(ERROR"Parsing error (open gaps)"TEXT, 2);
+		return (false);
+	}
+	if (!ft_strncmp(str, "\"\"", 2) || !ft_strncmp(str, "\'\'", 2))
+		return (false);
+	return (true);
+}
 
-typedef struct s_proccess
+char	*return_message(char	*str)
 {
-	int		fds[2];
-	int		fdin;
-	int		fdout;
-}				t_proccess;
-
-bool	init_env(t_lst	*list, t_cmd	*cmds);
-void	init_cmd_path(t_cmd	**cmds);
-
-#endif
+	free(str);
+	ft_putendl_fd(ERROR"Parsing error (undefined symbol)"TEXT, 2);
+	return (NULL);
+}

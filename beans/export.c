@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:38 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 15:42:58 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 21:43:11 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void	print_sorted_env(t_lst	*list)
 	char	*temp;
 	t_lst	*tmp1;
 	t_lst	*tmp2;
+	t_lst	*copy;
 
-	tmp1 = list;
+	copy = make_copy_env(list);
+	tmp1 = copy;
 	while (tmp1->next)
 	{
 		tmp2 = tmp1->next;
@@ -70,11 +72,13 @@ void	print_sorted_env(t_lst	*list)
 		}
 		tmp1 = tmp1->next;
 	}
-	while (list)
+	tmp1 = copy;
+	while (tmp1)
 	{
-		ft_putendl_fd(list->var, 1);
-		list = list->next;
+		ft_putendl_fd(tmp1->var, 1);
+		tmp1 = tmp1->next;
 	}
+	ft_lstclear_rem(&copy, del);
 }
 
 int	mini_export(t_lst **list, char **str, bool *flag)

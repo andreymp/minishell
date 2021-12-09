@@ -29,7 +29,8 @@ SRC =   parse/parcer.c	\
 		beans/history.c	\
 		beans/exec.c \
 		utils/utils2.c \
-
+		utils/utils3.c \
+		utils/utils4.c \
 
 INC = 	-I libft/libft.h 	\
 		-I includes/parser.h         \

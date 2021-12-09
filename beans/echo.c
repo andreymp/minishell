@@ -6,9 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:40:01 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 19:13:01 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 21:39:57 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../includes/minishell.h"
 
 #include "../includes/minishell.h"
 
@@ -31,7 +33,8 @@ static bool	tilda(char	*str, char	**envp)
 				ft_putstr_fd(envp[i] + 5, 1);
 			else if (*(str + 1) && *(str + 1) != '/')
 			{
-				ft_putstr_fd(ERROR"minishell: no such user or named directory: "TEXT, 1);
+				ft_putstr_fd(ERROR"minishell: no such user or directory: ", 1);
+				ft_putstr_fd(TEXT, 1);
 				ft_putstr_fd(str + 1, 1);
 				return (false);
 			}
@@ -40,33 +43,22 @@ static bool	tilda(char	*str, char	**envp)
 	return (true);
 }
 
-int	mini_echo(char **str, t_inside_gap_2	__unused change, bool *flag, char	**envp)
+int	mini_echo(char **str, bool *flag, char	**envp) // 29 lines
 {
 	bool	nflag;
-	int 	i;
-	int		j;
+	int		i;
 
 	nflag = false;
 	i = 0;
-	if (str[1] && !ft_strncmp(str[1], "-n", 2))
-	{
-		j = 1;
-		while (str[1][j] && str[1][j] == 'n')
-			j++;
-		if (!str[1][j])
-			nflag = true;
-		else
-			nflag = false;
-	}
+	if (str[1] && !ft_strcmp(str[1], "-n"))
+		nflag = true;
 	if (nflag)
 		i = 1;
 	while (str[++i])
 	{
-		if (str[i] && !ft_strncmp(str[i], "-n", 2) && flag)
-			continue ;
 		if (!ft_strncmp("$?", str[i], 2))
 		{
-			ft_putnbr_fd(g_sig.ex_code, 1);
+			ft_putnbr_fd(g_exit, 1);
 			str[i] += 2;
 		}
 		if (!tilda(str[i], envp))
@@ -80,6 +72,6 @@ int	mini_echo(char **str, t_inside_gap_2	__unused change, bool *flag, char	**env
 	if (!nflag)
 		ft_putchar_fd('\n', 1);
 	*flag = true;
-	g_sig.ex_code = 0;
+	g_exit = 0;
 	return (0);
 }

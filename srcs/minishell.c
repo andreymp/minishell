@@ -6,19 +6,28 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:00:36 by remelia           #+#    #+#             */
-/*   Updated: 2021/12/08 20:22:42 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 20:37:50 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+void	wait_func(t_mini	*mini, int size)
+{
+	close(mini->proc.fdout);
+	close(mini->proc.fdin);
+	while (size--)
+		waitpid(-1, &g_sig.ex_code, 0);
+}
+
 t_lst	*envp_copy(char *envp[])
 {
-	t_lst	*list = NULL;
+	t_lst	*list;
 	int		i;
 
 	i = 0;
-	while(envp[i])
+	list = NULL;
+	while (envp[i])
 	{
 		ft_lstadd_back_rem(&list, ft_lstnew_rem(envp[i]));
 		i++;
@@ -51,7 +60,8 @@ static char	*insert_inside_gap2(t_inside_gap_2	change, char	*str)
 
 void	minishell(t_mini	*mini, char	**envp, char	*strs[])
 {
-	int	i;
+	int		i;
+	t_list	*tmp;
 
 	i = -1;
 	while (1)
@@ -63,11 +73,16 @@ void	minishell(t_mini	*mini, char	**envp, char	*strs[])
 		strs[++i] = readline(MINISHELL"minishell $> "TEXT);
 		if (!result_line(&strs[i], &mini->history, mini))
 			continue ;
-		strs[i] = insert_inside_gap2(mini->change, strs[i]);
 		mini->lst = do_split(strs[i]);
+		tmp = mini->lst;
+		while (tmp)
+		{
+			tmp->content = insert_inside_gap2(mini->change, tmp->content);
+			mini->lst->content = redirect(mini->lst->content, &mini);
+			tmp = tmp->next;
+		}
 		make_split(&mini->lst);
-		if (!exec(mini, envp))
-			run(&mini->cmds, &mini->proc, mini, envp);
+		exec(mini, envp);
 		ft_lstclear(&mini->lst, free);
 	}
 }

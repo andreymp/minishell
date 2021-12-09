@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 15:41:48 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 21:06:49 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 20:07:10 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,40 @@
 bool	exec(t_mini	*mini, char	**envp)
 {
 	bool	flag;
-	t_list	*tmp;
 
-	tmp = mini->lst;
-	while (tmp)
+	while (mini->lst)
 	{
 		flag = false;
-		if (!ft_strcmp(tmp->cmd[0], "pwd"))
+		if (!ft_strcmp(mini->lst->cmd[0], "pwd"))
 			mini_pwd(&flag);		
-		if (!ft_strcmp(tmp->cmd[0], "cd"))
-			mini_cd(tmp->cmd[1], &mini->list, &flag);
-		if (!ft_strcmp(tmp->cmd[0], "echo"))
-			mini_echo(tmp->cmd, mini->change, &flag, envp);
-		if (!ft_strcmp(tmp->cmd[0], "export"))
-			mini_export(&mini->list, tmp->cmd, &flag);
-		if (!ft_strcmp(tmp->cmd[0], "unset"))
-			mini_unset(&mini->list, tmp->cmd, &flag);
-		if (!ft_strcmp(tmp->cmd[0], "env"))
+		else if (!ft_strcmp(mini->lst->cmd[0], "cd"))
+			mini_cd(mini->lst->cmd[1], &mini->list, &flag);
+		else if (!ft_strcmp(mini->lst->cmd[0], "echo"))
+			mini_echo(mini->lst->cmd, mini->change, &flag, envp);
+		else if (!ft_strcmp(mini->lst->cmd[0], "export"))
+			mini_export(&mini->list, mini->lst->cmd, &flag);
+		else if (!ft_strcmp(mini->lst->cmd[0], "unset"))
+			mini_unset(&mini->list, mini->lst->cmd, &flag);
+		else if (!ft_strcmp(mini->lst->cmd[0], "env"))
 			mini_env(mini->list, &flag);
-		if (!ft_strcmp(tmp->cmd[0], "exit"))
-			mini_exit(tmp->cmd[1], &flag);
-		if (!ft_strcmp(tmp->cmd[0], "history"))
+		else if (!ft_strcmp(mini->lst->cmd[0], "exit"))
+			mini_exit(mini->lst->cmd[1], &flag);
+		else if (!ft_strcmp(mini->lst->cmd[0], "history"))
 			mini_history(mini->history, &flag);
-		if (!ft_strncmp(tmp->cmd[0], "$?", 2))
-			mini_dq(tmp->cmd[0], &flag);
-		if (!ft_strncmp(tmp->cmd[0], "./minishell", 2))
+		else if (!ft_strncmp(mini->lst->cmd[0], "$?", 2))
+			mini_dq(mini->lst->cmd[0], &flag);
+		else if (!ft_strcmp(mini->lst->cmd[0], "./minishell"))
+		{
 			mini_shlvl(&mini, envp, &flag);
-		tmp = tmp->next;
+			run(&mini->cmds, &mini->proc, mini, envp);
+		}
+		else
+			run(&mini->cmds, &mini->proc, mini, envp);
+		if (mini->proc.fdin > 0)
+			dup2(mini->cmds.in, STDIN_FILENO);
+		if (mini->proc.fdout > 0)
+			dup2(mini->cmds.out, STDOUT_FILENO);
+		mini->lst = mini->lst->next;
 	}
-	return (flag);
+	return (true);
 }

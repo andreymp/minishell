@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 15:37:00 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/08 11:49:47 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/09 21:43:01 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_list	*make_history(char	*str, t_list	*lst)
 {
 	if (!lst)
-			lst = ft_lstnew(str);
+		lst = ft_lstnew(str);
 	else
 		ft_lstadd_back(&lst, ft_lstnew(str));
 	return (lst);
@@ -34,9 +34,9 @@ static void	print(t_list	*lst, int i)
 	}
 }
 
-int mini_history(t_list	*history, bool *flag)
+int	mini_history(t_list	*history, bool *flag)
 {
-    int i;
+	int	i;
 	int	size;
 
 	if (ft_lstsize(history) <= 16)
