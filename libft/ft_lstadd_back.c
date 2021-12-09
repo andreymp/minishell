@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:02:27 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 14:02:29 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+void	ft_lstadd_back(t_list	**lst, t_list	*new)
 {
-	while (list)
-	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
-	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	if (*lst)
+		ft_lstlast(*lst)->next = new;
+	else
+		*lst = new;
 }

@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:04:05 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/01 17:57:33 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	mini_env(t_lst *list, bool *flag)
+char	*ft_strjoin(char const	*s1, char const	*s2)
 {
-	while (list)
+	char	*str;
+	size_t	len1;
+	size_t	len2;
+
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	str = (char *) malloc((len1 + len2 + 1) * sizeof(char));
+	if (str)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		ft_memcpy(str, s1, len1);
+		ft_memmove(str + len1, s2, len2);
+		*(str + len1 + len2) = '\0';
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	if (*s2 != '/')
+		free((char *) s1);
+	return (str);
 }

@@ -1,38 +1,42 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 11:39:55 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/07 21:22:17 by jobject          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_isdigit(int c)
+#include "../includes/minishell.h"
+
+void	mini_exit(char *str, bool *flag)
 {
-	char	i;
-
-	i = '0';
-	while (i < 58)
-	{
-		if (i == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	mini_exit(char *str)
-{
-	int	exit_code;
 	int	i;
 
-	i = 0;
-	while (str[i] != '\0')
+	i = -1;
+	if (str)
 	{
-		if (ft_isdigit(str[i]) == 0 && str[i] != '-')
+		while (str[++i])
 		{
-			write(2, "numeric argumen required\n", 25);
-			exit(255);
+			if (!ft_isdigit(str[i]) && str[i] != '-')
+			{
+				ft_putstr_fd("exit\n"ERROR, 2);
+				ft_putendl_fd("minishell: exit: numeric argument required", 2);
+				ft_putstr_fd(TEXT, 2);
+				g_exit = 255;
+				exit(g_exit);
+			}
 		}
-		i++;
+		g_exit = ft_atoi(str);
 	}
-	exit_code = ft_atoi(str);
-	while (exit_code < 0)
-		exit_code = 256 + exit_code;
-	while(exit_code > 255)
-		exit_code = exit_code - 256;
-	exit(exit_code);
+	while (g_exit < 0)
+		g_exit = 256 + g_exit;
+	while (g_exit > 255)
+		g_exit = g_exit - 256;
+	*flag = true;
+	write(2, "exit\n", 5);
+	exit(g_exit);
 }

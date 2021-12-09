@@ -1,6 +1,18 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 11:39:44 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/07 14:59:25 by jobject          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	mini_pwd(void)
+#include "../includes/minishell.h"
+
+int	mini_pwd(bool	*flag)
 {
 	char	*dir;
 	int		size;
@@ -22,5 +34,27 @@ int	mini_pwd(void)
 		}	
 		free(dir);
 	}
+	g_exit = 0;
+	*flag = true;
 	return (0);
+}
+
+char	*pwd_cur(void)
+{
+	char	*dir;
+	int		size;
+	char	*res;
+
+	size = 1;
+	while (1)
+	{
+		dir = malloc(size);
+		res = getcwd(dir, size);
+		if (!res)
+			size++;
+		else
+			break ;
+		free(dir);
+	}
+	return (dir);
 }

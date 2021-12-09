@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:02:39 by jobject           #+#    #+#             */
+/*   Updated: 2021/11/30 16:16:36 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	mini_env(t_lst *list, bool *flag)
+void	ft_lstclear(t_list	**lst, void (*del)(void *))
 {
-	while (list)
+	t_list	*tmp;
+
+	if (!(*lst))
+		return ;
+	while (*lst)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		tmp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = tmp;
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
 }

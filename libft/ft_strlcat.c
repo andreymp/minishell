@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:04:07 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 14:04:08 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+size_t	ft_strlcat(char	*dest, const char	*src, size_t	size)
 {
-	while (list)
+	size_t	src_len;
+	size_t	i;
+	size_t	j;
+
+	src_len = ft_strlen(src);
+	i = 0;
+	while (*(dest + i) && i < size)
+		i++;
+	j = 0;
+	while (j < src_len && i + j + 1 < size)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		*(dest + i + j) = *(src + j);
+		j++;
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	if (i < size)
+		*(dest + i + j) = '\0';
+	return (i + src_len);
 }

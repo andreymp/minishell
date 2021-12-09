@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:03:40 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 14:11:23 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
+#include <unistd.h>
 
-int	mini_env(t_lst *list, bool *flag)
+void	ft_putstr_fd(char	*s, int fd)
 {
-	while (list)
+	int	i;
+
+	i = 0;
+	while (*(s + i))
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		write(fd, s + i, 1);
+		i++;
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
 }

@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:04:21 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/07 20:34:25 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+char	*ft_strnstr(const char	*big, const char	*little, size_t	len)
 {
-	while (list)
+	char	*ptr1;
+	char	*ptr2;
+	size_t	i;
+	size_t	j;
+
+	ptr1 = (char *) big;
+	ptr2 = (char *) little;
+	i = 0;
+	if (!(*ptr2))
+		return (ptr1 + i);
+	while (*(ptr1 + i) && i < len)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		if (*(ptr1 + i) == *ptr2)
+		{
+			j = 0;
+			while (*(ptr1 + i + j) == *(ptr2 + j) && i + j < len)
+				j++;
+			if (*(ptr2 + j) == '\0')
+				return (ptr1 + i);
+		}
+		i++;
 	}
-	*flag = true;
-	g_exit = 0;
 	return (0);
 }

@@ -1,20 +1,68 @@
-NAME	=	minishell
-SRCS	=	minishell.c utils.c beans/echo.c beans/pwd.c beans/cd.c beans/exit.c \
-	beans/env.c lists.c beans/export.c utils2.c beans/unset.c dolla_qm.c
-CC		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra
-OBJS	=	${SRCS:.c=.o}
-HEADER	=	minishell.h
-RM		=	rm -f
+NAME =	minishell
 
-all:		$(NAME)
+CC =	gcc
+CFLAGS =	-g -Wall -Wextra -Werror -MMD
+
+RM =	rm -rf
+
+SRC =   parse/parcer.c	\
+		utils/utils.c 	\
+		utils/utils1.c 	\
+		utils/lists.c     \
+		parse/do_symbol.c \
+		parse/redirect.c  \
+		utils/get_next_line.c \
+		utils/get_next_line_utils.c \
+		srcs/main.c		\
+		pipes/init_pipe.c \
+		pipes/pipe.c		\
+		beans/cd.c  \
+		beans/echo.c \
+		beans/env.c  \
+		beans/exit.c  \
+		beans/export.c  \
+		beans/pwd.c  \
+		beans/unset.c  \
+		srcs/minishell.c \
+		beans/history.c	\
+		beans/exec.c \
+		utils/utils2.c \
+
+
+INC = 	-I libft/libft.h 	\
+		-I includes/parser.h         \
+		-I includes/get_next_line.h	\
+		-I includes/pipe.h			\
+		-I includes/minishell.h		\
+		-I /Users/${USER}/.brew/opt/readline/include \
+
+OBJS =	$(SRC:.c=.o)
+DEP =	$(SRC:.c=.d)
+
+LD_FLAGS =	-L libft \
+			-L /Users/${USER}/.brew/opt/readline/lib \
+
+.PHONY :	all clean re fclean
+
+.c.o :	
+		$(CC) $(CFLAGS) $(INC) -c $< -o $(<:.c=.o)
+
+
 $(NAME):	$(OBJS)
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L/Users/remelia/.brew/opt/readline/lib -I/Users/remelia/.brew/opt/readline/include -lreadline
-$(OBJS):	$(HEADER)
-clean:
-		$(RM) $(OBJS)
-fclean:		clean
-		$(RM) $(NAME)
-re:			fclean all
+			@make -C ./libft/
+			@make bonus -C ./libft/
+			$(CC) $(CFLAGS) $(LD_FLAGS) $(OBJS) ./libft/libft.a -o $(NAME) -lreadline
 
-.PHONY:		all clean fclean re
+all: 		$(NAME)
+
+clean:
+			$(RM) $(OBJS) $(DEP)
+			@make clean -C libft/
+
+fclean: 	clean
+			$(RM) $(NAME)
+			@make fclean -C libft/
+
+re: 		fclean all
+
+-include $(DEP)

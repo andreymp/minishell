@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jobject <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 13:49:27 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 13:49:45 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	mini_env(t_lst *list, bool *flag)
+void	*ft_calloc(size_t	nmemb, size_t	size)
 {
-	while (list)
+	void	*res;
+
+	res = (void *) malloc(nmemb * size);
+	if (res)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		ft_bzero(res, nmemb * size);
+		return (res);
 	}
-	*flag = true;
-	g_exit = 0;
 	return (0);
 }

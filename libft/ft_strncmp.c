@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:04:18 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 14:04:19 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+int	ft_strncmp(const char	*s1, const char *s2, size_t	n)
 {
-	while (list)
+	size_t	i;
+
+	i = 0;
+	while (i < n)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		if (*s1 != *s2 || !(*s1) || !(*s2))
+			return (*(unsigned char *)s1 - *(unsigned char *)s2);
+		i++;
+		s1++;
+		s2++;
 	}
-	*flag = true;
-	g_exit = 0;
 	return (0);
 }

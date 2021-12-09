@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/13 16:56:19 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/01 13:12:44 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int	mini_env(t_lst *list, bool *flag)
-{
-	while (list)
-	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
-	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
-}
+# include <unistd.h>
+# include <stdlib.h>
+
+# define BUFFER_SIZE 42
+
+char	*get_next_line(int fd);
+size_t	ft_strlengnl(const char	*str);
+void	*ft_memcpygnl(void	*dest, const void	*src, size_t	num);
+char	*ft_strjoingnl(char	*s1, char const	*s2);
+char	*ft_strdupgnl(const char	*str);
+
+#endif

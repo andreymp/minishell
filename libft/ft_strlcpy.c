@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:04:10 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 14:04:10 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+size_t	ft_strlcpy(char	*dest, const char	*src, size_t	size)
 {
-	while (list)
+	size_t	src_len;
+
+	src_len = ft_strlen(src);
+	if (src_len + 1 < size)
+		ft_memcpy(dest, src, src_len + 1);
+	else if (size)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		ft_memcpy(dest, src, size - 1);
+		*(dest + size - 1) = '\0';
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	return (src_len);
 }

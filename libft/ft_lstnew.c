@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:03:05 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/03 17:27:15 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	mini_env(t_lst *list, bool *flag)
+t_list	*ft_lstnew(char	*content)
 {
-	while (list)
+	t_list	*elem;
+
+	elem = (t_list *) malloc(sizeof(t_list));
+	if (elem)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		elem->content = ft_strdup(content);
+		// free (content);
+		elem->cmd = NULL;
+		elem->next = NULL;
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	return (elem);
 }

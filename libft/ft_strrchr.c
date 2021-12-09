@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:04:24 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 14:04:24 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+char	*ft_strrchr(const char	*str, int code)
 {
-	while (list)
+	char	*ptr;
+	int		i;
+
+	i = ft_strlen(str) - 1;
+	ptr = (char *) str;
+	if (code == '\0')
+		return (ptr + i + 1);
+	while (i >= 0)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		if (*(ptr + i) == (char) code)
+			return (ptr + i);
+		i--;
 	}
-	*flag = true;
-	g_exit = 0;
 	return (0);
 }

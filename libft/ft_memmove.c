@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:03:22 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 14:03:23 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+void	*ft_memmove(void	*dest, const void	*src, size_t	num)
 {
-	while (list)
+	char	*to;
+	char	*from;
+
+	from = (char *) src;
+	to = (char *) dest;
+	if (!to && !from)
+		return (0);
+	if (to < from)
+		ft_memcpy(dest, src, num);
+	else
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		while (num--)
+			*(to + num) = *(from + num);
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	return (dest);
 }

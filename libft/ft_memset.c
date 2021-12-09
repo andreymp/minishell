@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:03:27 by jobject           #+#    #+#             */
+/*   Updated: 2021/10/08 15:27:12 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+void	*ft_memset(void	*source, int code, size_t	length)
 {
-	while (list)
+	size_t		i;
+	char		*str;
+
+	i = 0;
+	str = (char *) source;
+	while (i < length)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		*(str + i) = (unsigned char) code;
+		i++;
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	return (source);
 }

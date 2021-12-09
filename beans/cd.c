@@ -1,36 +1,87 @@
-/* не рвботает :(((( */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 11:40:07 by jobject           #+#    #+#             */
+/*   Updated: 2021/12/07 15:01:42 by jobject          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
-void	err_print(char *name)
+static int	change_pwd(char	*pwd, char	*old_pwd, t_lst	**list)
 {
-	if (errno == EACCES)
-		write(2, "cd error: permission denied: ", 29);
-	else if (errno == ENFILE)
-		write(2, "cd error: too many opend threads: ", 34);
-	else if (errno == ENOENT)
-		write(2, "cd error: no such file or directory: ", 37);
-	else if (errno == ENOMEM)
-		write(2, "cd error: not enough memory: ", 29);
-	else if (errno == ENOTDIR)
-		write(2, "cd error: \"", 11);
-	ft_putstr_fd(name, 2);
-	if (errno == ENOTDIR)
-		write(2, "\" not a directory", 18);
-	write(2, "\n", 1);
+	t_lst	*tmp;
+	char	*temp;
+
+	tmp = *list;
+	while (tmp && ft_strncmp(tmp->var, "PWD=", 4))
+		tmp = tmp->next;
+	if (!tmp)
+		return (1);
+	temp = ft_strdup("PWD=");
+	tmp->var = ft_strjoin(temp, pwd);
+	while (tmp && ft_strncmp(tmp->var, "OLDPWD=", 7))
+		tmp = tmp->next;
+	if (!tmp)
+		return (1);
+	temp = ft_strdup("OLDPWD=");
+	tmp->var = ft_strjoin(temp, old_pwd);
+	free(pwd);
+	free(old_pwd);
+	return (0);
 }
 
-int	mini_cd(char *path)
+void	if_no_globe(char *old_pwd, t_lst **list)
 {
-	errno = 0;
-	
-	chdir(path);
-	opendir(path);
-	if (errno != 0)
+	char	*str[4];
+	char	*tmp1;
+	char	*tmp2;
+	bool	flag = false;
+
+	str[0] = ft_strdup("export");
+	tmp1 = ft_strdup("PWD=");
+	tmp1 = ft_strjoin(tmp1, pwd_cur());
+	str[1] = ft_strdup(tmp1);
+	free(tmp1);
+	tmp2 = ft_strdup("OLDPWD=");
+	tmp2 = ft_strjoin(tmp2, old_pwd);
+	str[2] = ft_strdup(tmp2);
+	str[3] = NULL;
+	mini_export(list, str, &flag);
+	free(tmp2);
+}
+
+int	mini_cd(char *path, t_lst **list, bool *flag)
+{
+	char	*temp;
+	char	*pwd;
+	char	*old_pwd;
+
+	g_exit = 0;
+	*flag = true;
+	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/"))
 	{
-		err_print(path);
-		return (errno);
+		temp = ft_strdup("/Users/");
+		temp = ft_strjoin(temp, getenv("USER"));
+		old_pwd = pwd_cur();
+		chdir(temp);
+		if (change_pwd(temp, old_pwd, list))
+			if_no_globe(old_pwd, list);
+		return (0);
 	}
-	chdir(path);
+	old_pwd = pwd_cur();
+	if (chdir(path) == -1)
+	{
+		ft_putstr_fd(ERROR"cd: no such file or directory: "TEXT, 2);
+		ft_putendl_fd(path, 2);
+		g_exit = 1;
+	}
+	pwd = pwd_cur();
+	if (change_pwd(pwd, old_pwd, list))
+		if_no_globe(old_pwd, list);
 	return (0);
 }

@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 11:39:58 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/07 15:04:50 by jobject          ###   ########.fr       */
+/*   Created: 2021/10/08 14:03:11 by jobject           #+#    #+#             */
+/*   Updated: 2021/11/30 15:38:12 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	mini_env(t_lst *list, bool *flag)
+int	ft_lstsize(t_list	*lst)
 {
-	while (list)
+	int		size;
+	t_list	*tmp;
+
+	if (!lst)
+		return (0);
+	tmp = lst;
+	size = 0;
+	while (tmp)
 	{
-		ft_putstr_fd(list->var, 1);
-		write(1, "\n", 1);
-		list = list->next;
+		size++;
+		tmp = tmp->next;
 	}
-	*flag = true;
-	g_exit = 0;
-	return (0);
+	return (size);
 }
