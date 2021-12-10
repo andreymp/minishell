@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:20:27 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 20:33:22 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 13:58:56 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ bool	init_env(t_lst	*list, t_cmd	*cmds)
 		cmds->mypaths = ft_split(list->var + 5, ':');
 	else
 	{
+		cmds->mypaths = NULL;
 		ft_putendl_fd(ERROR"minishell: PATH not found"TEXT, 2);
 		g_sig.ex_code = 127;
 		return (false);

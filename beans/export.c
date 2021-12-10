@@ -6,28 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:38 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:43:11 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 13:09:41 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-t_lst	*ft_lstlastlast(t_lst *lst)
-{
-	if (!lst)
-		return (0);
-	while (lst->next->next)
-		lst = lst->next;
-	return (lst);
-}
-
-void	ft_lstadd_preback(t_lst **lst, t_lst *new)
-{
-	if (*lst)
-		ft_lstlastlast(*lst)->next = new;
-	else
-		*lst = new;
-}
 
 int	if_same(t_lst **list, char *str)
 {
@@ -46,6 +29,15 @@ int	if_same(t_lst **list, char *str)
 		list = &(*list)->next;
 	}
 	return (0);
+}
+
+static void	just_print(t_lst	*tmp1)
+{
+	while (tmp1)
+	{
+		ft_putendl_fd(tmp1->var, 1);
+		tmp1 = tmp1->next;
+	}
 }
 
 void	print_sorted_env(t_lst	*list)
@@ -72,12 +64,7 @@ void	print_sorted_env(t_lst	*list)
 		}
 		tmp1 = tmp1->next;
 	}
-	tmp1 = copy;
-	while (tmp1)
-	{
-		ft_putendl_fd(tmp1->var, 1);
-		tmp1 = tmp1->next;
-	}
+	just_print(copy);
 	ft_lstclear_rem(&copy, del);
 }
 

@@ -6,11 +6,9 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:40:01 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:39:57 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 13:06:33 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../includes/minishell.h"
 
 #include "../includes/minishell.h"
 
@@ -43,24 +41,49 @@ static bool	tilda(char	*str, char	**envp)
 	return (true);
 }
 
-int	mini_echo(char **str, bool *flag, char	**envp) // 29 lines
+static bool	init_nflag(char	*str, int	*i)
+{
+	int		j;
+	bool	nflag;
+
+	nflag = false;
+	if (str && !ft_strncmp(str, "-n", 2))
+	{
+		j = 1;
+		while (str[j] && str[j] == 'n')
+			j++;
+		if (!str[j])
+			nflag = true;
+		else
+			nflag = false;
+	}
+	if (nflag)
+		*i = 1;
+	return (nflag);
+}
+
+static char	*special_case(char	*str)
+{
+	if (!ft_strncmp("$?", str, 2))
+	{
+		ft_putnbr_fd(g_sig.ex_code, 1);
+		str += 2;
+	}
+	return (str);
+}
+
+int	mini_echo(char **str, bool *flag, char	**envp)
 {
 	bool	nflag;
 	int		i;
 
-	nflag = false;
 	i = 0;
-	if (str[1] && !ft_strcmp(str[1], "-n"))
-		nflag = true;
-	if (nflag)
-		i = 1;
+	nflag = init_nflag(str[1], &i);
 	while (str[++i])
 	{
-		if (!ft_strncmp("$?", str[i], 2))
-		{
-			ft_putnbr_fd(g_exit, 1);
-			str[i] += 2;
-		}
+		if (str[i] && !ft_strncmp(str[i], "-n", 2) && flag)
+			continue ;
+		str[i] = special_case(str[i]);
 		if (!tilda(str[i], envp))
 			break ;
 		while (*str[i] == '~')
@@ -72,6 +95,6 @@ int	mini_echo(char **str, bool *flag, char	**envp) // 29 lines
 	if (!nflag)
 		ft_putchar_fd('\n', 1);
 	*flag = true;
-	g_exit = 0;
+	g_sig.ex_code = 0;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:39:55 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:45:26 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 12:51:45 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	mini_exit(char *str, bool *flag)
 			if (!ft_isdigit(str[i]) && str[i] != '-')
 			{
 				write(2, "exit\n", 5);
-				ft_putendl_fd(ERROR"minishell: exit: a: numeric argument required", 2);
+				ft_putendl_fd(ERROR EXIT TEXT, 2);
 				g_sig.ex_code = 255;
 				exit(g_sig.ex_code);
 			}

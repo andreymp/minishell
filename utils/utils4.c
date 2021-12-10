@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 21:17:11 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:24:36 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 15:52:27 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,31 @@ char	*return_message(char	*str)
 	free(str);
 	ft_putendl_fd(ERROR"Parsing error (undefined symbol)"TEXT, 2);
 	return (NULL);
+}
+
+t_lst	*ft_lstlastlast(t_lst *lst)
+{
+	if (!lst)
+		return (0);
+	while (lst->next->next)
+		lst = lst->next;
+	return (lst);
+}
+
+void	ft_lstadd_preback(t_lst **lst, t_lst *new)
+{
+	if (*lst)
+		ft_lstlastlast(*lst)->next = new;
+	else
+		*lst = new;
+}
+
+void	free_mem(char	**strs)
+{
+	int	i;
+
+	i = 0;
+	while (strs[i])
+		free(strs[i++]);
+	free(strs);
 }

@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:31:46 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:34:30 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 15:58:38 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*read_heredoc(char	*lim, char	*str, int i, int j);
 bool	check_filename(char	*filename, char	*str);
 char	*dollar_join(char	*tmp, char	*str, int i, int j);
 bool	dollar_valid(char	*str, int *i, int j);
-char	*after_check(char	*str);
 bool	pre_check(char	*str);
 char	*return_message(char	*str);
 bool	preparser(char	*str);

@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 20:47:08 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:34:12 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 15:57:11 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ bool	dollar_valid(char	*str, int *i, int j)
 	return (true);
 }
 
-char	*after_check(char	*str)
+char	*after_check(char	*str, t_mini	*mini)
 {
 	if (!check_pipes(str))
 	{
@@ -88,5 +88,6 @@ char	*after_check(char	*str)
 	}
 	if (!str)
 		return (NULL);
+	str = redirect(str, &mini);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 11:51:51 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 20:17:10 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 16:40:09 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ bool	make_export(char	**str, t_lst	**list)
 	int	result_of_exp;
 
 	j = 0;
-	while (str[j])
+	while (str[++j])
 	{
-		result_of_exp = check_export_exception(str[++j], &j);
+		result_of_exp = check_export_exception(str[j], &j);
 		if (!result_of_exp)
 			return (0);
 		else if (result_of_exp == 1)
@@ -124,7 +124,7 @@ bool	make_export(char	**str, t_lst	**list)
 		if (!str[j][i])
 			return (false);
 		if (if_same(list, str[j]))
-			return (false);
+			continue ;
 		if (j == 1)
 			ft_lstadd_preback(list, ft_lstnew_rem(str[j]));
 		else

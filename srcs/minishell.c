@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:00:36 by remelia           #+#    #+#             */
-/*   Updated: 2021/12/09 20:37:50 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 15:55:47 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,19 @@ static char	*insert_inside_gap2(t_inside_gap_2	change, char	*str)
 	return (str);
 }
 
+static void	special_free(t_mini	*mini)
+{
+	t_list	*tmp;
+
+	tmp = mini->lst;
+	while (tmp)
+	{
+		free_mem(tmp->cmd);
+		tmp = tmp->next;
+	}
+	ft_lstclear(&mini->lst, free);
+}
+
 void	minishell(t_mini	*mini, char	**envp, char	*strs[])
 {
 	int		i;
@@ -74,15 +87,15 @@ void	minishell(t_mini	*mini, char	**envp, char	*strs[])
 		if (!result_line(&strs[i], &mini->history, mini))
 			continue ;
 		mini->lst = do_split(strs[i]);
+		free(strs[i]);
 		tmp = mini->lst;
 		while (tmp)
 		{
 			tmp->content = insert_inside_gap2(mini->change, tmp->content);
-			mini->lst->content = redirect(mini->lst->content, &mini);
 			tmp = tmp->next;
 		}
 		make_split(&mini->lst);
 		exec(mini, envp);
-		ft_lstclear(&mini->lst, free);
+		special_free(mini);
 	}
 }

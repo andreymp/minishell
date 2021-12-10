@@ -6,21 +6,11 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 12:28:54 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 20:32:36 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 17:16:39 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	free_mem(char	**strs)
-{
-	int	i;
-
-	i = 0;
-	while (strs[i])
-		free(strs[i++]);
-	free(strs);
-}
 
 void	actions(int signal_num, siginfo_t __unused *info,
 	void __unused *old_info)
@@ -71,8 +61,40 @@ t_mini	*zero_init(char	**envp)
 	mini->sig.sa_flags = SA_SIGINFO;
 	mini->history = NULL;
 	mini->lst = NULL;
-	mini->shlvl = 1;
 	return (mini);
+}
+
+static char	**init_shlvl(char	**envp)
+{
+	int		i;
+	char	*tmp;
+	char	*sl;
+	int		shlvl;
+
+	i = 0;
+	while (envp[i] && ft_strncmp(envp[i], "SHLVL=", 6))
+		i++;
+	if (envp[i])
+	{
+		shlvl = ft_atoi(envp[i] + 6);
+		tmp = ft_substr(envp[i], 0, 6);
+		sl = ft_itoa(++shlvl);
+		envp[i] = ft_strjoin(tmp, sl);
+		free(sl);
+	}
+	return (envp);
+}
+
+void	handle_free(char	*str, t_list	*history, t_mini	*mini)
+{
+	ft_putstr_fd("exit\n", 2);
+	free(str);
+	if (history)
+		ft_lstclear(&history, free);
+	if (mini->lst)
+		ft_lstclear(&mini->lst, free);
+	ft_lstclear_rem(&mini->list, del);
+	exit(EXIT_FAILURE);
 }
 
 int	main(int __unused argc, char __unused **argv, char	**envp)
@@ -81,11 +103,11 @@ int	main(int __unused argc, char __unused **argv, char	**envp)
 	char		*strs[10000];
 
 	g_sig.ex_code = 0;
+	envp = init_shlvl(envp);
 	mini = zero_init(envp);
 	if (!mini)
 		return (1);
 	minishell(mini, envp, strs);
-	ft_lstclear_rem(&mini->list, del);
 	free(mini);
 	return (0);
 }

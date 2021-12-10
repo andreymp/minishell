@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:31:43 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:29:26 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 16:57:58 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	make_split(t_list	**lst)
 t_list	*do_split(char	*str)
 {
 	t_list	*lst;
+	t_list	*new;
 	char	**strs;
 	int		i;
 
@@ -35,12 +36,11 @@ t_list	*do_split(char	*str)
 	strs = ft_split(str, '|');
 	while (strs[i])
 	{
-		if (!lst)
-			lst = ft_lstnew(strs[i]);
-		else
-			ft_lstadd_back(&lst, ft_lstnew(strs[i]));
+		new = ft_lstnew(strs[i]);
+		ft_lstadd_back(&lst, new);
 		i++;
 	}
+	free_mem(strs);
 	return (lst);
 }
 
@@ -91,7 +91,7 @@ char	*parser(char	*str, t_mini	*mini, int i, int flag)
 		else
 			i++;
 	}
-	return (after_check(str));
+	return (after_check(str, mini));
 }
 
 bool	result_line(char	**str, t_list	**history, t_mini	*mini)
@@ -99,10 +99,7 @@ bool	result_line(char	**str, t_list	**history, t_mini	*mini)
 	int	i;
 
 	if (!*str)
-	{
-		ft_putstr_fd("exit\n", 2);
-		exit(EXIT_FAILURE);
-	}
+		handle_free(*str, *history, mini);
 	i = 0;
 	while (**str != '\0' && (**str == ' ' || **str == '\t'))
 		(*str)++;

@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 16:36:45 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 20:38:31 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 17:16:03 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	run(t_cmd	*cmds, t_proccess	*proc, t_mini	*mini, char	**envp)
 		wait_func(mini, size);
 	g_sig.pid = 0;
 	g_sig.ex_code = WEXITSTATUS(g_sig.ex_code);
+	free(cmds->cmd_path);
 }

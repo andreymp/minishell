@@ -6,7 +6,7 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 20:14:42 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 20:57:55 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 15:23:26 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*trunc_out(char	*str, int *i, t_mini	**mini)
 	}
 	if (!check_filename(filename, str))
 		return (NULL);
-	(*mini)->proc.fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0777);
+	(*mini)->proc.fdout = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	dup2((*mini)->proc.fdout, STDOUT_FILENO);
 	close((*mini)->proc.fdout);
 	return (free_fd(str, filename, j, *i));
@@ -75,7 +75,7 @@ static char	*heredoc(char	*str, int *i, t_mini	**mini)
 	tmp = read_heredoc(lim, str, *i, j);
 	if (tmp)
 		return (tmp);
-	(*mini)->proc.fdin = open("heredoc", O_RDONLY, 0777);
+	(*mini)->proc.fdin = open("heredoc", O_RDONLY, 0644);
 	dup2((*mini)->proc.fdin, STDIN_FILENO);
 	close((*mini)->proc.fdin);
 	return (free_fd(str, lim, j, *i));
@@ -95,7 +95,7 @@ static char	*append_out(char	*str, int *i, t_mini	**mini)
 		free(str);
 		return (NULL);
 	}
-	(*mini)->proc.fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	(*mini)->proc.fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	dup2((*mini)->proc.fdout, STDOUT_FILENO);
 	close((*mini)->proc.fdout);
 	return (free_fd(str, filename, j, *i));
@@ -125,7 +125,7 @@ char	*redirect(char	*str, t_mini	**mini)
 		else
 			i++;
 		if (!str)
-			break ;
+			return (NULL);
 	}
 	return (str);
 }

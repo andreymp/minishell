@@ -6,11 +6,9 @@
 /*   By: jobject <jobject@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 11:40:07 by jobject           #+#    #+#             */
-/*   Updated: 2021/12/09 21:39:13 by jobject          ###   ########.fr       */
+/*   Updated: 2021/12/10 13:11:50 by jobject          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../includes/minishell.h"
 
 #include "../includes/minishell.h"
 
@@ -42,8 +40,9 @@ void	if_no_globe(char *old_pwd, t_lst **list)
 	char	*str[4];
 	char	*tmp1;
 	char	*tmp2;
-	bool	flag = false;
+	bool	flag;
 
+	flag = false;
 	str[0] = ft_strdup("export");
 	tmp1 = ft_strdup("PWD=");
 	tmp1 = ft_strjoin(tmp1, pwd_cur());
@@ -57,13 +56,23 @@ void	if_no_globe(char *old_pwd, t_lst **list)
 	free(tmp2);
 }
 
+static void	check_no_cd(char	*path)
+{
+	if (chdir(path) == -1)
+	{
+		ft_putstr_fd(ERROR"cd: no such file or directory: "TEXT, 2);
+		ft_putendl_fd(path, 2);
+		g_sig.ex_code = 1;
+	}
+}
+
 int	mini_cd(char *path, t_lst **list, bool *flag)
 {
 	char	*temp;
 	char	*pwd;
 	char	*old_pwd;
 
-	g_exit = 0;
+	g_sig.ex_code = 0;
 	*flag = true;
 	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/"))
 	{
@@ -76,12 +85,7 @@ int	mini_cd(char *path, t_lst **list, bool *flag)
 		return (0);
 	}
 	old_pwd = pwd_cur();
-	if (chdir(path) == -1)
-	{
-		ft_putstr_fd(ERROR"cd: no such file or directory: "TEXT, 2);
-		ft_putendl_fd(path, 2);
-		g_exit = 1;
-	}
+	check_no_cd(path);
 	pwd = pwd_cur();
 	if (change_pwd(pwd, old_pwd, list))
 		if_no_globe(old_pwd, list);
